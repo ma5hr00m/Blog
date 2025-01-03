@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="git官方文档👈有问题建议先看文档，二手资料有时会存在奇奇怪怪的问题。  emmm，其实是想写一篇使用hexo快速搭建个人博客的教程，但感觉在那篇教程里穿插着讲git的话，很多初学者可能搞不清楚git到底是什么，甚至可能会把git和hexo的概念绑定起来，那样就比较麻烦了。所以就决定先写一篇文章介绍git（去年学得时候没写，正好也是补充一下）。 git相关概念到底什么是git呢？用一句话来说，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git基础教程">
+<meta property="og:url" content="https://blog.kinoko.fun/2023/06/08/base-git/index.html">
+<meta property="og:site_name" content="阿菇の博客">
+<meta property="og:description" content="git官方文档👈有问题建议先看文档，二手资料有时会存在奇奇怪怪的问题。  emmm，其实是想写一篇使用hexo快速搭建个人博客的教程，但感觉在那篇教程里穿插着讲git的话，很多初学者可能搞不清楚git到底是什么，甚至可能会把git和hexo的概念绑定起来，那样就比较麻烦了。所以就决定先写一篇文章介绍git（去年学得时候没写，正好也是补充一下）。 git相关概念到底什么是git呢？用一句话来说，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.ma5hr00m.top/blog/20231216105917.png">
+<meta property="article:published_time" content="2023-06-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-02T07:21:22.217Z">
+<meta property="article:author" content="阿菇kinoko">
+<meta property="article:tag" content="ma5hr00m,kinoko,阿菇kinoko,blog,博客,博文">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.ma5hr00m.top/blog/20231216105917.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>git基础教程</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="阿菇の博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2023/08/12/bride-of-blackmith/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2023/06/08/base-git/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2023/06/08/base-git/&text=git基础教程"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2023/06/08/base-git/&title=git基础教程"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2023/06/08/base-git/&is_video=false&description=git基础教程"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=git基础教程&body=Check out this article: https://blog.kinoko.fun/2023/06/08/base-git/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2023/06/08/base-git/&title=git基础教程"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2023/06/08/base-git/&title=git基础教程"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2023/06/08/base-git/&title=git基础教程"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2023/06/08/base-git/&title=git基础教程"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2023/06/08/base-git/&name=git基础教程&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2023/06/08/base-git/&t=git基础教程"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#git%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">git相关概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">版本控制系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F-%E9%9B%86%E4%B8%AD%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">分布式 &amp; 集中式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">git安装配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">2.1.</span> <span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%88%9B%E5%BB%BAgit%E4%BB%93%E5%BA%93"><span class="toc-number">3.</span> <span class="toc-text">本地创建git仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git%E5%88%86%E5%8C%BA"><span class="toc-number">4.</span> <span class="toc-text">git分区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E5%88%86%E5%8C%BA"><span class="toc-number">4.1.</span> <span class="toc-text">三个分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E5%88%86%E5%8C%BA%E4%B9%8B%E9%97%B4%E6%93%8D%E7%BA%B5%E6%96%87%E4%BB%B6"><span class="toc-number">4.2.</span> <span class="toc-text">在分区之间操纵文件</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        git基础教程
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">阿菇kinoko</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-06-07T16:00:00.000Z" class="dt-published" itemprop="datePublished">2023-06-08</time>
+        
+        (Updated: <time datetime="2025-01-02T07:21:22.217Z" class="dt-updated" itemprop="dateModified">2025-01-02</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Git/">Git</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <blockquote>
+<p><a target="_blank" rel="noopener" href="https://git-scm.com/doc">git官方文档</a>👈有问题建议先看文档，二手资料有时会存在奇奇怪怪的问题。</p>
+</blockquote>
+<p>emmm，其实是想写一篇<strong>使用<code>hexo</code>快速搭建个人博客</strong>的教程，但感觉在那篇教程里穿插着讲<code>git</code>的话，很多初学者可能搞不清楚<code>git</code>到底是什么，甚至可能会把<code>git</code>和<code>hexo</code>的概念绑定起来，那样就比较麻烦了。所以就决定先写一篇文章介绍<code>git</code>（去年学得时候没写，正好也是补充一下）。</p>
+<h2 id="git相关概念"><a href="#git相关概念" class="headerlink" title="git相关概念"></a>git相关概念</h2><p>到底什么是<code>git</code>呢？用一句话来说，<code>git</code>是一种<strong>分布式版本控制系统</strong>。暂时看不懂也没关系，接下来会详细说所谓的“分布式版本控制系统”是什么。</p>
+<h3 id="版本控制系统"><a href="#版本控制系统" class="headerlink" title="版本控制系统"></a>版本控制系统</h3><p>先说说版本控制系统是个啥。</p>
+<p>为了方便理解，在这里举一个常见的案例来进行解释：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">你需要和舍友共同完成一篇3000字的论文，你写A部分，舍友写B部分。</span><br><span class="line">初步完成A部分内容后，你通过QQ等软件将文本文件发送给舍友，让他继续写B部分，而同时你也在你的电脑上接着完善A部分。</span><br><span class="line">当舍友完成B部分后，他又将文本文件发送给你，然后，你需要将A部分改动的内容与舍友的B部分合并，找出哪些地方发生了变化，这就有点麻烦了。</span><br><span class="line">写完论文之后，你和舍友聚在一块，进一步完善论文。你发现，你的猪头舍友在写B部分时误删了一些A的内容，而你在合并时没有注意，导致这部分内容你和舍友都没有备份，无奈之下你们只好重写了这块丢失的内容。</span><br><span class="line">再次完善论文时，你们发现，在编写的过程中论文B部分的立意跑偏了，你们需要重写B部分。但现在AB混在了一起，很难把论文恢复到原先的状态。</span><br><span class="line">在崩溃的边缘，你有可能会想，有没有一款软件，能够自动记录对文件的每次修改，同时还可以与别的成员协同编辑，这样就不需要来回发送文件，也不需要反复另存文件以保证留有文档的备份？</span><br></pre></td></tr></table></figure>
+
+<p>这种时候，就到我们的主角出场的时候了，它就是今天的主角：</p>
+<p><del>在线共享文档</del> 版本控制系统！</p>
+<p>版本控制系统（Version Control System，VCS）就可以完成上述的工作，它可以自动跟踪文件的变化、还原文件的历史记录、协调多人在同一个项目中工作，宾且可以在必要情况下回溯到过去的任意版本。</p>
+<p>在软件开发中，版本控制系统可以帮助开发人员有效地管理和维护代码库，支持项目的分支、合并等操作。这样，在多人协作开发的情况下，不同的成员可以同时对同一个项目进行开发，而不会产生代码冲突等问题。此外，版本控制系统还可以提供更好的安全备份和恢复机制，以防止意外的数据丢失或代码损坏！</p>
+<p>常见的版本控制系统有<code>Subversion</code>、<code>Mercurial</code>，当然，还有我们的主角——<code>git</code>！</p>
+<h3 id="分布式-集中式"><a href="#分布式-集中式" class="headerlink" title="分布式 &amp; 集中式"></a>分布式 &amp; 集中式</h3><p>再说说什么是分布式，以及与分布式对应的集中式。</p>
+<p>在版本控制系统中，<strong>分布式</strong>是指每个开发者都有完整的<strong>代码库副本</strong>，并且可以在本地进行修改、提交和推送等操作。</p>
+<p>相比之下，<strong>集中式</strong>版本控制系统（例如<code>SVN</code>）依赖于一个<strong>中央代码库</strong>。开发者从中央代码库检出代码副本，然后在本地进行修改，修改后，他们<strong>必须</strong>将更改推送回中央代码库，否则其他开发者无法获得最新版本的代码。</p>
+<p>二者的区别在于，在分布式系统中，每个开发者都有完整的代码库副本，可以在本地进行修改、提交和推送等操作；而在集中式系统中，开发者只能从中央代码库检出代码，并且必须将更改推送回中央代码库。这就意味着，在分布式系统中，开发者可以在没有网络连接的情况下继续工作，不需要频繁地与中央服务器进行通信，同时，每个开发者都能拥有完整的历史记录，方便历史回溯等操作。</p>
+<h2 id="git安装配置"><a href="#git安装配置" class="headerlink" title="git安装配置"></a>git安装配置</h2><p>阿菇的系统是<code>Fedora 37</code>，如有差异请自行解决。在终端执行以下命令安装<code>git</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Fedora用户使用这句</span></span><br><span class="line"><span class="built_in">sudo</span> dnf install git</span><br><span class="line"></span><br><span class="line"><span class="comment"># Ubuntu用户使用这句</span></span><br><span class="line"><span class="built_in">sudo</span> apt install git</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>我们可以通过修改<code>git</code>配置来定制<code>git</code>环境。首先需要设置用户名和邮箱地址，我们之后的每一次<code>git</code>提交都会包含这些信息。使用以下指令全局设置<code>username</code>和<code>email</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将&quot;your-username&quot;和&quot;your-email-address&quot;替换为你的用户名和邮箱地址</span></span><br><span class="line"><span class="comment"># 建议设置为你的github账户的用户名和绑定的邮箱地址</span></span><br><span class="line">git config --global user.name  <span class="string">&quot;your-usernmae&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;your-email-address&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>你还可以使用以下指令检查你的<code>git</code>配置信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --list</span><br></pre></td></tr></table></figure>
+
+<p>使用以下指令查看当前系统所有的<code>git</code>配置文件及其位置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --list --show-origin</span><br></pre></td></tr></table></figure>
+
+<p>进一步的配置，如设置默认的文本编辑器、搭建git服务器等，可以参考官方文档，这里不过多介绍。</p>
+<h2 id="本地创建git仓库"><a href="#本地创建git仓库" class="headerlink" title="本地创建git仓库"></a>本地创建git仓库</h2><p>仓库，可以简单的理解成一个目录，这个目录里的文件和资源都可以通过git进行管理。</p>
+<p>使用以下指令初始化一个本地的git仓库。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将 your-repo-name 替换为你的git仓库的名称</span></span><br><span class="line">git init your-repo-name</span><br></pre></td></tr></table></figure>
+
+<p>使用这句指令后，会有输出提醒，你新建了一个空的Git仓库。转进到这个目录，你会发现这个目录下其实已经包括了一个隐藏目录<code>.git</code>，这里面存储的是一些版本信息，用于跟踪管理文件信息，平常不去碰它就好了。</p>
+<h2 id="git分区"><a href="#git分区" class="headerlink" title="git分区"></a>git分区</h2><p>此部分讲解<code>git</code>的三个工作分区是怎么工作的，也就是<code>git</code>到底是如何对我们的项目进行版本控制的。</p>
+<h3 id="三个分区"><a href="#三个分区" class="headerlink" title="三个分区"></a>三个分区</h3><p>一个完整的本地<code>git</code>工作目录包括三个分区，工作区、暂存区和版本库。</p>
+<ul>
+<li><strong>工作区</strong>：指的是当前目录下除<code>.git</code>目录外的区域，用户可以随意修改工作区文件的内容。</li>
+<li><strong>暂存区</strong>：指的是<code>.git</code>目录下的<code>index</code>文件，该文件包含了当前工作树中所有被添加到版本控制中的文件列表和它们的元数据，如文件名、文件类型、文件大小、最后修改时间等信息。</li>
+<li><strong>版本库</strong>：指的是存储代码版本历史记录的地方，也就是代码仓库。git的版本库包含了所有commit的snapshot和message，以及所有branch、tag等元数据信息。通常情况下，一个项目只有一个版本库，它可以存储在本地或者远程服务器上，开发者可以通过命令行或者图形界面工具来管理和操作版本库。</li>
+</ul>
+<p>以上三个分区中，暂存区和版本库可以合称为<strong>git仓库</strong>。</p>
+<p>看到这里，你可能会有些疑惑，我们刚才使用<code>init</code>指令不是创建了一个git仓库吗，为什么这里又说<strong>暂存区和版本库可以合称git仓库</strong>，工作区去哪里了？</p>
+<p>我们刚才使用<code>git init</code>指令，<strong>本质上是创建了一个空的项目目录，这个项目目录下自动包含了一个<code>.git</code>目录</strong>（也就是<code>git</code>仓库），方便我们对这个项目目录进行版本管理，刚才所说的暂存区和版本库，实际上都位于<code>.git</code>隐藏目录下。出于习惯，我们一般会把整个项目目录叫做一个<code>git仓库</code>，也可以叫做<strong>本地仓库</strong>，与接下来会讲到的<strong>远程仓库</strong>相对应。</p>
+<h3 id="在分区之间操纵文件"><a href="#在分区之间操纵文件" class="headerlink" title="在分区之间操纵文件"></a>在分区之间操纵文件</h3><p>这张图可以清晰的看到三个分区之间的关系，以及我们应该如何使用<code>git</code>来操作我们的文件。</p>
+<p><img src="https://img.ma5hr00m.top/blog/20231216105917.png" alt="git三个分区之间的关系"></p>
+<p>在具体讲解如何在不同分区之间操纵文件之前，先说一下如何查看某个文件的状态。我们可以使用以下指令查看当前git目录中某个文件的具体状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+<p>在这个指令的输出中，一个文件存在以下三种状态：</p>
+<ul>
+<li>不显示：表明该<strong>文件没有发生改动</strong>，改动是指该文件在工作区和在版本库中的内容不同，新建、删除文件均属于改动；</li>
+<li>红色文件：表示<strong>文件已发生改动，且没有添加到暂存区中</strong>；</li>
+<li>绿色文件：表明<strong>文件已发生改动，且已经添加到暂存区中</strong>。</li>
+</ul>
+<p>具体的指令就不细说了，直接在底下罗列出来，需要时拿过来用就行，很容易就能看懂。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 工作区 -&gt; 暂存区</span></span><br><span class="line">git add filename</span><br><span class="line"></span><br><span class="line"><span class="comment"># 暂存区 -&gt; 版本库</span></span><br><span class="line">git commit -m <span class="string">&quot;message&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 前两句指令的合体，同时实现前两句指令的功能</span></span><br><span class="line">git commit -am <span class="string">&quot;message&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 缓存区 -&gt; 工作区</span></span><br><span class="line">git <span class="built_in">rm</span> --cached filename</span><br><span class="line">git <span class="built_in">rm</span> --staged filename</span><br><span class="line">git reset HEAD filename</span><br><span class="line"></span><br><span class="line"><span class="comment"># 撤销当前工作区所有改动，包括文件删除和创建操作</span></span><br><span class="line">git checkout -- filename</span><br><span class="line">git restore filename</span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">📄首页</a></li>
+        
+          <li><a href="/archives/">📂归档</a></li>
+        
+          <li><a href="/friends/">👫友链</a></li>
+        
+          <li><a href="/categories/">🗂️分类</a></li>
+        
+          <li><a href="/tags/">🏷️标签</a></li>
+        
+          <li><a href="/about/">🌸关于</a></li>
+        
+          <li><a href="/log/">📖日志</a></li>
+        
+          <li><a href="/search/">🔍搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#git%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">git相关概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">版本控制系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F-%E9%9B%86%E4%B8%AD%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">分布式 &amp; 集中式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">git安装配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">2.1.</span> <span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%88%9B%E5%BB%BAgit%E4%BB%93%E5%BA%93"><span class="toc-number">3.</span> <span class="toc-text">本地创建git仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git%E5%88%86%E5%8C%BA"><span class="toc-number">4.</span> <span class="toc-text">git分区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E5%88%86%E5%8C%BA"><span class="toc-number">4.1.</span> <span class="toc-text">三个分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E5%88%86%E5%8C%BA%E4%B9%8B%E9%97%B4%E6%93%8D%E7%BA%B5%E6%96%87%E4%BB%B6"><span class="toc-number">4.2.</span> <span class="toc-text">在分区之间操纵文件</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2023/06/08/base-git/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2023/06/08/base-git/&text=git基础教程"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2023/06/08/base-git/&title=git基础教程"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2023/06/08/base-git/&is_video=false&description=git基础教程"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=git基础教程&body=Check out this article: https://blog.kinoko.fun/2023/06/08/base-git/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2023/06/08/base-git/&title=git基础教程"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2023/06/08/base-git/&title=git基础教程"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2023/06/08/base-git/&title=git基础教程"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2023/06/08/base-git/&title=git基础教程"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2023/06/08/base-git/&name=git基础教程&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2023/06/08/base-git/&t=git基础教程"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    <div class="footer-cnrecord">
+      <img id="gongan" alt class="gongan-logo"
+          src="/images/gongan.png" />
+      浙ICP备2023028448号-2
+    </div>
+    <div class="footer-copyright">
+      Copyright &copy;
+      
+      
+      2022-2025
+      阿菇kinoko
+    </div>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

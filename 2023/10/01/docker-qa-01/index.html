@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="HGAME-MINI2023 里的一道题目，我没法直接构建附件里给出的镜像，遇到了一点小问题。最后顺利解决了，这里略做记录。本篇文章未涉及解题思路，给出的代码都为附件中所提供。 背景题目名称 unzip? or not，给出了 Dockerfile 和 docker-compose.yml 文件。为了方便测试 payload，我想直接在本地起一个服务，但在执行 sudo docker-compos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="构建Docker镜像时遇到的问题">
+<meta property="og:url" content="https://blog.kinoko.fun/2023/10/01/docker-qa-01/index.html">
+<meta property="og:site_name" content="阿菇の博客">
+<meta property="og:description" content="HGAME-MINI2023 里的一道题目，我没法直接构建附件里给出的镜像，遇到了一点小问题。最后顺利解决了，这里略做记录。本篇文章未涉及解题思路，给出的代码都为附件中所提供。 背景题目名称 unzip? or not，给出了 Dockerfile 和 docker-compose.yml 文件。为了方便测试 payload，我想直接在本地起一个服务，但在执行 sudo docker-compos">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://agu-img.oss-cn-hangzhou.aliyuncs.com/blog/20231014141024.png">
+<meta property="og:image" content="https://agu-img.oss-cn-hangzhou.aliyuncs.com/blog/20231014143720.png">
+<meta property="article:published_time" content="2023-09-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-02T07:21:22.218Z">
+<meta property="article:author" content="阿菇kinoko">
+<meta property="article:tag" content="ma5hr00m,kinoko,阿菇kinoko,blog,博客,博文">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://agu-img.oss-cn-hangzhou.aliyuncs.com/blog/20231014141024.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>构建Docker镜像时遇到的问题</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="阿菇の博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2023/10/09/base-linux/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2023/09/29/miku-temple/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2023/10/01/docker-qa-01/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&text=构建Docker镜像时遇到的问题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&title=构建Docker镜像时遇到的问题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&is_video=false&description=构建Docker镜像时遇到的问题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=构建Docker镜像时遇到的问题&body=Check out this article: https://blog.kinoko.fun/2023/10/01/docker-qa-01/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&title=构建Docker镜像时遇到的问题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&title=构建Docker镜像时遇到的问题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&title=构建Docker镜像时遇到的问题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&title=构建Docker镜像时遇到的问题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&name=构建Docker镜像时遇到的问题&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&t=构建Docker镜像时遇到的问题"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu-devel-%E8%BD%AF%E4%BB%B6%E4%BB%93%E5%BA%93%E5%A4%B1%E6%95%88"><span class="toc-number">2.</span> <span class="toc-text">ubuntu:devel 软件仓库失效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#go-get-timeout"><span class="toc-number">3.</span> <span class="toc-text">go get timeout</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        构建Docker镜像时遇到的问题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">阿菇kinoko</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-09-30T16:00:00.000Z" class="dt-published" itemprop="datePublished">2023-10-01</time>
+        
+        (Updated: <time datetime="2025-01-02T07:21:22.218Z" class="dt-updated" itemprop="dateModified">2025-01-02</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Docker/">Docker</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>HGAME-MINI2023 里的一道题目，我没法直接构建附件里给出的镜像，遇到了一点小问题。最后顺利解决了，这里略做记录。<br>本篇文章未涉及解题思路，给出的代码都为附件中所提供。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>题目名称 <code>unzip? or not</code>，给出了 <code>Dockerfile</code> 和 <code>docker-compose.yml</code> 文件。<br>为了方便测试 payload，我想直接在本地起一个服务，但在执行 <code>sudo docker-compose up -d</code> 时遇到了两个报错。</p>
+<p>先看看源文件：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;2&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8080:8080&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Dockerfile</span></span><br><span class="line"><span class="keyword">FROM</span> golang:<span class="number">1.16</span> as builder</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> src /src</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /src</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> go build -o app</span></span><br><span class="line"><span class="keyword">FROM</span> ubuntu:devel</span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; apt-get install -y unzip \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; apt-get clean</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder /src/app /app/app</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> ./app</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ubuntu-devel-软件仓库失效"><a href="#ubuntu-devel-软件仓库失效" class="headerlink" title="ubuntu:devel 软件仓库失效"></a>ubuntu:devel 软件仓库失效</h2><p>看看报错情况：</p>
+<p><img src="https://agu-img.oss-cn-hangzhou.aliyuncs.com/blog/20231014141024.png" alt="报错信息"></p>
+<p>当我们在 ubuntu:devel 中执行 <code>apt-gte update</code> 指令时报错，提示无法找到当前 <code>ubuntu</code> 版本的软件仓库。</p>
+<blockquote>
+<p>ubuntu:devel 代表了 Ubuntu 的开发版 Docker 镜像。</p>
+</blockquote>
+<p>我起初的想法是检查网络环境以及尝试换源，试了试发现都不行。</p>
+<p>然后找到 <em>stackExchange</em> 上的一个 <a target="_blank" rel="noopener" href="https://serverfault.com/questions/1106694/unable-to-run-apt-update-on-ubuntu-21-10">帖子</a>，很相似的问题。解决办法也比较简单，手动替换镜像中的软件仓库链接即可，多添两句指令的事儿。将 <code>Dockerfile</code> 修改为：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Dockerfile</span></span><br><span class="line"><span class="keyword">FROM</span> golang:<span class="number">1.16</span> as builder</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> src /src</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /src</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> go build -o app</span></span><br><span class="line"><span class="keyword">FROM</span> ubuntu:devel</span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> sed -i -r <span class="string">&#x27;s/([a-z]&#123;2&#125;.)?archive.ubuntu.com/old-releases.ubuntu.com/g&#x27;</span> /etc/apt/sources.list \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; sed -i -r <span class="string">&#x27;s/security.ubuntu.com/old-releases.ubuntu.com/g&#x27;</span> /etc/apt/sources.list \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; apt update \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; apt install -y unzip \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; apt clean</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder /src/app /app/app</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> ./app</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<p>事后，我进入到构建好的容器中，使用 <code>cat /etc/os-release</code> 检查了当前 <code>ubuntu:devel</code> 指向的 ubuntu 版本，发现是 <code>ubuntu:21.10</code>。</p>
+<p>而根据 ubuntu 官网的一篇 <a target="_blank" rel="noopener" href="https://fridge.ubuntu.com/2022/07/19/ubuntu-21-10-impish-indri-end-of-life-reached-on-july-14-2022/">通知</a>，<br><code>Ubuntu 21.10</code> 于 2022 年 7 月 14 日停止支持，软件仓库也不再更新，并在段时间内归档到 <code>old-releases.ubuntu.com</code> 中。</p>
+<p>这也就是我们直接使用 <code>apt update</code> 指令时会报错的原因。</p>
+<h2 id="go-get-timeout"><a href="#go-get-timeout" class="headerlink" title="go get timeout"></a>go get timeout</h2><p>同样是先看看报错：</p>
+<p><img src="https://agu-img.oss-cn-hangzhou.aliyuncs.com/blog/20231014143720.png" alt="报错信息"></p>
+<p>这个问题就比较简单了，处于某些原因我们无法直接访问 <code>golang.org</code>，所以 <code>go get</code> 指令无法正常执行。</p>
+<p>在 <code>Dockerfile</code> 中设置代理即可。在文件中添加下面的指令：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ENV</span> GOPROXY=https://goproxy.cn</span><br></pre></td></tr></table></figure>
+
+<p>之后就没有阻碍啦，使用 <code>sudo docker-compose up -d</code> 即可在本地部署一个题目服务。</p>
+<hr>
+<p>以上就是我遇到的两个问题，<code>go get</code> 代理问题其实很早就碰到过，这里也一并顺手记录下来。</p>
+<p>最后能正常使用的完整版 Dockerfile 如下：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> golang:<span class="number">1.16</span> as builder</span><br><span class="line"><span class="keyword">ENV</span> GOPROXY=https://goproxy.cn</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> src /src</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /src</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> go build -o app</span></span><br><span class="line"><span class="keyword">FROM</span> ubuntu:devel</span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> sed -i -r <span class="string">&#x27;s/([a-z]&#123;2&#125;.)?archive.ubuntu.com/old-releases.ubuntu.com/g&#x27;</span> /etc/apt/sources.list \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; sed -i -r <span class="string">&#x27;s/security.ubuntu.com/old-releases.ubuntu.com/g&#x27;</span> /etc/apt/sources.list \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; apt update \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; apt install -y unzip \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; apt clean</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder /src/app /app/app</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> ./app</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<p>以上。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">📄首页</a></li>
+        
+          <li><a href="/archives/">📂归档</a></li>
+        
+          <li><a href="/friends/">👫友链</a></li>
+        
+          <li><a href="/categories/">🗂️分类</a></li>
+        
+          <li><a href="/tags/">🏷️标签</a></li>
+        
+          <li><a href="/about/">🌸关于</a></li>
+        
+          <li><a href="/log/">📖日志</a></li>
+        
+          <li><a href="/search/">🔍搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu-devel-%E8%BD%AF%E4%BB%B6%E4%BB%93%E5%BA%93%E5%A4%B1%E6%95%88"><span class="toc-number">2.</span> <span class="toc-text">ubuntu:devel 软件仓库失效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#go-get-timeout"><span class="toc-number">3.</span> <span class="toc-text">go get timeout</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2023/10/01/docker-qa-01/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&text=构建Docker镜像时遇到的问题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&title=构建Docker镜像时遇到的问题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&is_video=false&description=构建Docker镜像时遇到的问题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=构建Docker镜像时遇到的问题&body=Check out this article: https://blog.kinoko.fun/2023/10/01/docker-qa-01/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&title=构建Docker镜像时遇到的问题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&title=构建Docker镜像时遇到的问题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&title=构建Docker镜像时遇到的问题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&title=构建Docker镜像时遇到的问题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&name=构建Docker镜像时遇到的问题&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2023/10/01/docker-qa-01/&t=构建Docker镜像时遇到的问题"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    <div class="footer-cnrecord">
+      <img id="gongan" alt class="gongan-logo"
+          src="/images/gongan.png" />
+      浙ICP备2023028448号-2
+    </div>
+    <div class="footer-copyright">
+      Copyright &copy;
+      
+      
+      2022-2025
+      阿菇kinoko
+    </div>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

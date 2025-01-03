@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="阿菇最近倾向于用原生三件套做 Web 开发，想尽可能少地依赖三方库。 或许没什么必要，因为封装好的东西用起来确实爽快。但造轮子确实也有造轮子的快乐。不可辩解的是，阿菇对前端项目中乱糟糟的配置文件以及 node_modules 感到厌烦，即使在开发过程中用了 File Nesting Updater 这样简化目录结构的插件。 掌握一定 Web 开发基础后再回过头来学习，能发现之前没注意到的有趣知识，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTML的少见标签及&lt;head&gt;优化">
+<meta property="og:url" content="https://blog.kinoko.fun/2023/10/24/html-relearn/index.html">
+<meta property="og:site_name" content="阿菇の博客">
+<meta property="og:description" content="阿菇最近倾向于用原生三件套做 Web 开发，想尽可能少地依赖三方库。 或许没什么必要，因为封装好的东西用起来确实爽快。但造轮子确实也有造轮子的快乐。不可辩解的是，阿菇对前端项目中乱糟糟的配置文件以及 node_modules 感到厌烦，即使在开发过程中用了 File Nesting Updater 这样简化目录结构的插件。 掌握一定 Web 开发基础后再回过头来学习，能发现之前没注意到的有趣知识，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://agu-img.oss-cn-hangzhou.aliyuncs.com/blog/20231006101948.png">
+<meta property="article:published_time" content="2023-10-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-02T07:21:22.223Z">
+<meta property="article:author" content="阿菇kinoko">
+<meta property="article:tag" content="ma5hr00m,kinoko,阿菇kinoko,blog,博客,博文">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://agu-img.oss-cn-hangzhou.aliyuncs.com/blog/20231006101948.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HTML的少见标签及&lt;head&gt;优化</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="阿菇の博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2023/11/08/python-env/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2023/10/15/base-network/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2023/10/24/html-relearn/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&text=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&title=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&is_video=false&description=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTML的少见标签及&lt;head&gt;优化&body=Check out this article: https://blog.kinoko.fun/2023/10/24/html-relearn/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&title=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&title=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&title=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&title=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&name=HTML的少见标签及&lt;head&gt;优化&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2023/10/24/html-relearn/&t=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML-%E5%85%83%E7%B4%A0"><span class="toc-number">1.</span> <span class="toc-text">HTML 元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">&lt;abbr&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-1"><span class="toc-number">1.2.</span> <span class="toc-text">&lt;address&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-2"><span class="toc-number">1.3.</span> <span class="toc-text">&lt;bdi&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-3"><span class="toc-number">1.4.</span> <span class="toc-text">&lt;bdo&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-4"><span class="toc-number">1.5.</span> <span class="toc-text">&lt;caption&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-5"><span class="toc-number">1.6.</span> <span class="toc-text">&lt;cite&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-6"><span class="toc-number">1.7.</span> <span class="toc-text">&lt;data&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-7"><span class="toc-number">1.8.</span> <span class="toc-text">&lt;datalist&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-8"><span class="toc-number">1.9.</span> <span class="toc-text">&lt;dfn&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-9"><span class="toc-number">1.10.</span> <span class="toc-text">&lt;dialog&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#and"><span class="toc-number">1.11.</span> <span class="toc-text">&lt;details&gt; and &lt;summary&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#and-1"><span class="toc-number">1.12.</span> <span class="toc-text">&lt;fieldset&gt; and &lt;legend&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-10"><span class="toc-number">1.13.</span> <span class="toc-text">&lt;hgroup&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-11"><span class="toc-number">1.14.</span> <span class="toc-text">&lt;kbd&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-12"><span class="toc-number">1.15.</span> <span class="toc-text">&lt;meter&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-13"><span class="toc-number">1.16.</span> <span class="toc-text">&lt;noscript&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#and-2"><span class="toc-number">1.17.</span> <span class="toc-text">&lt;picture&gt; and &lt;source&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-14"><span class="toc-number">1.18.</span> <span class="toc-text">&lt;progress&gt;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML%E5%B1%9E%E6%80%A7"><span class="toc-number">2.</span> <span class="toc-text">HTML属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#accesskey"><span class="toc-number">2.1.</span> <span class="toc-text">accesskey</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#autocomplete"><span class="toc-number">2.2.</span> <span class="toc-text">autocomplete</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#autofocus"><span class="toc-number">2.3.</span> <span class="toc-text">autofocus</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#contenteditable"><span class="toc-number">2.4.</span> <span class="toc-text">contenteditable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#inert"><span class="toc-number">2.5.</span> <span class="toc-text">inert</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#spellcheck"><span class="toc-number">2.6.</span> <span class="toc-text">spellcheck</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#translate"><span class="toc-number">2.7.</span> <span class="toc-text">translate</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%83%E7%B4%A0%E9%A1%BA%E5%BA%8F"><span class="toc-number">3.</span> <span class="toc-text">&lt;head&gt;元素顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%A8%E5%8F%A8%E5%8F%A8"><span class="toc-number">4.</span> <span class="toc-text">叨叨叨</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HTML的少见标签及&lt;head&gt;优化
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">阿菇kinoko</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-10-23T16:00:00.000Z" class="dt-published" itemprop="datePublished">2023-10-24</time>
+        
+        (Updated: <time datetime="2025-01-02T07:21:22.223Z" class="dt-updated" itemprop="dateModified">2025-01-02</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Frontend-Dev/">Frontend Dev</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>阿菇最近倾向于用原生三件套做 Web 开发，想尽可能少地依赖三方库。</p>
+<p>或许没什么必要，因为封装好的东西用起来确实爽快。但造轮子确实也有造轮子的快乐。不可辩解的是，阿菇对前端项目中乱糟糟的配置文件以及 <code>node_modules</code> 感到厌烦，即使在开发过程中用了 <code>File Nesting Updater</code> 这样简化目录结构的插件。</p>
+<p>掌握一定 Web 开发基础后再回过头来学习，能发现之前没注意到的有趣知识，可以再做记录。</p>
+<p>以下内容有很多代码片段，光说没意思，自己 copy 后修修改改看看效果！<br>可以在这个在线平台实验：<a target="_blank" rel="noopener" href="https://c.runoob.com/front-end/61/">HTML&#x2F;CSS&#x2F;JS 在线工具</a></p>
+<h2 id="HTML-元素"><a href="#HTML-元素" class="headerlink" title="HTML 元素"></a>HTML 元素</h2><p>Web 前端开发者经常使用语义化元素：既能提高 HTML 的可读性，也能减少写 CSS 命名的烦恼，还有利于 SEO 优化，好处多多。</p>
+<p>当然也可以 <code>&lt;div&gt;</code> 一把嗦，方便的很（类比后端编写 API 时 <code>POST</code> 一把嗦）。<br>很多老网站都是这么做的，比如我们做网站备案时用的 <a target="_blank" rel="noopener" href="https://www.beian.gov.cn/">互联网网站安全管理服务平台</a>，清一色的 <code>&lt;div&gt;</code> 标签。</p>
+<p>除了常用的 <code>&lt;header&gt;</code>、<code>&lt;main&gt;</code> 等规划网页布局的元素，<code>&lt;em&gt;</code>、<code>&lt;br&gt;</code> 等用于规划文本布局的元素，还有一些有趣的语义化标签。<br>我觉得以后能用上，也打算去用，这里就做个记录。</p>
+<h3 id=""><a href="#" class="headerlink" title="&lt;abbr&gt;"></a><code>&lt;abbr&gt;</code></h3><p>文本缩写元素，同时提供了一个 <code>title</code> 属性值，可以实现鼠标 hover 时显示具体内容：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">abbr</span> <span class="attr">title</span>=<span class="string">&quot;HyperText Markup Language&quot;</span>&gt;</span>HTML<span class="tag">&lt;/<span class="name">abbr</span>&gt;</span> is fun!</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="-1"><a href="#-1" class="headerlink" title="&lt;address&gt;"></a><code>&lt;address&gt;</code></h3><p>提供个人或组织的联系方式，仅表达了额外的语义信息。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">address</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;mailto:jim@rock.com&quot;</span>&gt;</span>jim@rock.com<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;tel:+13115552368&quot;</span>&gt;</span>(311) 555-2368<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">address</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="-2"><a href="#-2" class="headerlink" title="&lt;bdi&gt;"></a><code>&lt;bdi&gt;</code></h3><p>双向文本隔离元素，<code>dir</code> 属性不继承父元素，即被该元素包裹的内容方向不受父元素的影响，比如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">dir</span>=<span class="string">&quot;rtl&quot;</span>&gt;</span></span><br><span class="line">  This arabic word <span class="tag">&lt;<span class="name">bdi</span>&gt;</span>ARABIC_PLACEHOLDER<span class="tag">&lt;/<span class="name">bdi</span>&gt;</span> is automatically displayed</span><br><span class="line">  right-to-left.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="-3"><a href="#-3" class="headerlink" title="&lt;bdo&gt;"></a><code>&lt;bdo&gt;</code></h3><p>双向文本替代元素，可以改写文本的方向，而不需要编写 CSS 样式。</p>
+<p>自带的 <code>dir</code> 属性有两个可选值：</p>
+<ul>
+<li><code>ltr</code> - 左到右</li>
+<li><code>rtl</code> - 右到左<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bdo</span> <span class="attr">dir</span>=<span class="string">&quot;rtl&quot;</span>&gt;</span>This text will go right to left.<span class="tag">&lt;/<span class="name">bdo</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="-4"><a href="#-4" class="headerlink" title="&lt;caption&gt;"></a><code>&lt;caption&gt;</code></h3><p>HTML 表格标题元素，常作为 <code>&lt;table&gt;</code> 的第一个子元素出现。</p>
+<p>仅支持全局属性，要改变样式需要用 CSS 的 <code>caption-side</code> 或者 <code>text-align</code>。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">caption</span>&gt;</span></span><br><span class="line">    表格名称和值</span><br><span class="line">  <span class="tag">&lt;/<span class="name">caption</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">tbody</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">th</span> <span class="attr">scope</span>=<span class="string">&quot;col&quot;</span>&gt;</span>名称<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">th</span> <span class="attr">scope</span>=<span class="string">&quot;col&quot;</span>&gt;</span>HEX<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">th</span> <span class="attr">scope</span>=<span class="string">&quot;col&quot;</span>&gt;</span>HSLa<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">th</span> <span class="attr">scope</span>=<span class="string">&quot;col&quot;</span>&gt;</span>RGBa<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">th</span> <span class="attr">scope</span>=<span class="string">&quot;row&quot;</span>&gt;</span>Teal<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>#51F6F6<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>hsla(180, 90%, 64%, 1)<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>rgba(81, 246, 246, 1)<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">th</span> <span class="attr">scope</span>=<span class="string">&quot;row&quot;</span>&gt;</span>Goldenrod<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>#F6BC57<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>hsla(38, 90%, 65%, 1)<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>rgba(246, 188, 87, 1)<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">tbody</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="-5"><a href="#-5" class="headerlink" title="&lt;cite&gt;"></a><code>&lt;cite&gt;</code></h3><p>HTML 引用元素，表示一个作品的引用，且必须包含作品的标题。</p>
+<p>与之类似的有 <code>&lt;blackquote&gt;</code> 和 <code>&lt;q&gt;</code> 元素的 <code>cite</code> 属性，值一般为引用链接。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">blockquote</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>It was a bright cold day in April, and the clocks were striking thirteen.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">blockquote</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">figcaption</span>&gt;</span></span><br><span class="line">    First sentence in <span class="tag">&lt;<span class="name">cite</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;http://www.george-orwell.org/1984/0.html&quot;</span>&gt;</span>Nineteen Eighty-Four<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">cite</span>&gt;</span> by George</span><br><span class="line">    Orwell (Part 1, Chapter 1).</span><br><span class="line">  <span class="tag">&lt;/<span class="name">figcaption</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="-6"><a href="#-6" class="headerlink" title="&lt;data&gt;"></a><code>&lt;data&gt;</code></h3><p>将一个指定内容和机器可读的翻译联系在一起。但是，如果内容是与时间或者日期相关的，则一定要使用 <code>&lt;time&gt;</code>。</p>
+<p><code>value</code> 属性为标签内容所对应的数据。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">data</span> <span class="attr">value</span>=<span class="string">&quot;398&quot;</span>&gt;</span>迷你番茄酱<span class="tag">&lt;/<span class="name">data</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">data</span> <span class="attr">value</span>=<span class="string">&quot;399&quot;</span>&gt;</span>巨无霸番茄酱<span class="tag">&lt;/<span class="name">data</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">data</span> <span class="attr">value</span>=<span class="string">&quot;400&quot;</span>&gt;</span>超级巨无霸番茄酱<span class="tag">&lt;/<span class="name">data</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="-7"><a href="#-7" class="headerlink" title="&lt;datalist&gt;"></a><code>&lt;datalist&gt;</code></h3><p>类似输入框，但使用 <code>&lt;option&gt;</code> 提供了一些默认可选项。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">datalist</span> <span class="attr">id</span>=<span class="string">&quot;ice-cream-flavors&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;Chocolate&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;Coconut&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;Mint&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;Strawberry&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;Vanilla&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">datalist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="-8"><a href="#-8" class="headerlink" title="&lt;dfn&gt;"></a><code>&lt;dfn&gt;</code></h3><p>HTML 定义元素，一般结合前文的 <code>&lt;addr&gt;</code> 使用。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dfn</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">abbr</span> <span class="attr">title</span>=<span class="string">&quot;World-Wide Web&quot;</span>&gt;</span>WWW<span class="tag">&lt;/<span class="name">abbr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dfn</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="-9"><a href="#-9" class="headerlink" title="&lt;dialog&gt;"></a><code>&lt;dialog&gt;</code></h3><p>对话框元素，一般用于实现一个独立的交互式组件。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Simple modal dialog containing a form --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dialog</span> <span class="attr">id</span>=<span class="string">&quot;favDialog&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">form</span> <span class="attr">method</span>=<span class="string">&quot;dialog&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">label</span></span></span><br><span class="line"><span class="tag">        &gt;</span>Favorite animal:</span><br><span class="line">        <span class="tag">&lt;<span class="name">select</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;default&quot;</span>&gt;</span>Choose…<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">option</span>&gt;</span>Brine shrimp<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">option</span>&gt;</span>Red panda<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">option</span>&gt;</span>Spider monkey<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">value</span>=<span class="string">&quot;cancel&quot;</span>&gt;</span>Cancel<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;confirmBtn&quot;</span> <span class="attr">value</span>=<span class="string">&quot;default&quot;</span>&gt;</span>Confirm<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dialog</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;updateDetails&quot;</span>&gt;</span>Update details<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">output</span>&gt;</span><span class="tag">&lt;/<span class="name">output</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>对应的 <code>JavaScript</code> 代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> updateButton = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;updateDetails&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> favDialog = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;favDialog&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> outputBox = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;output&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> selectEl = favDialog.<span class="title function_">querySelector</span>(<span class="string">&quot;select&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> confirmBtn = favDialog.<span class="title function_">querySelector</span>(<span class="string">&quot;#confirmBtn&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// If a browser doesn&#x27;t support the dialog, then hide the</span></span><br><span class="line"><span class="comment">// dialog contents by default.</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> favDialog.<span class="property">showModal</span> !== <span class="string">&quot;function&quot;</span>) &#123;</span><br><span class="line">  favDialog.<span class="property">hidden</span> = <span class="literal">true</span>;</span><br><span class="line">  <span class="comment">/* a fallback script to allow this dialog/form to function</span></span><br><span class="line"><span class="comment">     for legacy browsers that do not support &lt;dialog&gt;</span></span><br><span class="line"><span class="comment">     could be provided here.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// &quot;Update details&quot; button opens the &lt;dialog&gt; modally</span></span><br><span class="line">updateButton.<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> favDialog.<span class="property">showModal</span> === <span class="string">&quot;function&quot;</span>) &#123;</span><br><span class="line">    favDialog.<span class="title function_">showModal</span>();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    outputBox.<span class="property">value</span> =</span><br><span class="line">      <span class="string">&quot;Sorry, the &lt;dialog&gt; API is not supported by this browser.&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// &quot;Favorite animal&quot; input sets the value of the submit button</span></span><br><span class="line">selectEl.<span class="title function_">addEventListener</span>(<span class="string">&quot;change&quot;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">  confirmBtn.<span class="property">value</span> = selectEl.<span class="property">value</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// &quot;Confirm&quot; button of form triggers &quot;close&quot; on dialog because of [method=&quot;dialog&quot;]</span></span><br><span class="line">favDialog.<span class="title function_">addEventListener</span>(<span class="string">&quot;close&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  outputBox.<span class="property">value</span> = <span class="string">`<span class="subst">$&#123;</span></span></span><br><span class="line"><span class="subst"><span class="string">    favDialog.returnValue</span></span></span><br><span class="line"><span class="subst"><span class="string">  &#125;</span> button clicked - <span class="subst">$&#123;<span class="keyword">new</span> <span class="built_in">Date</span>().toString()&#125;</span>`</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>使用该元素时应当注意搭配 <code>autofocus</code> 属性，为用户在弹出的对话框中自动选择一个合适的焦点。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;q&quot;</span> <span class="attr">autofocus</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="and"><a href="#and" class="headerlink" title="&lt;details&gt; and &lt;summary&gt;"></a><code>&lt;details&gt; and &lt;summary&gt;</code></h3><p>详细信息展开元素，很有用，二者搭配使用，灵活性远超下拉列表元素。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 默认展开 &lt;details open&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- &lt;summary&gt; 设置 list-style: none; 可以隐藏黑三角标志 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">details</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">summary</span>&gt;</span>Details<span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line">  Something small enough to escape casual notice.</span><br><span class="line"><span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>但没有内置的方法和属性可以添加状态转换时的动画效果。</p>
+<h3 id="and-1"><a href="#and-1" class="headerlink" title="&lt;fieldset&gt; and &lt;legend&gt;"></a><code>&lt;fieldset&gt; and &lt;legend&gt;</code></h3><p>用于对表单中的控制元素进行分组（也包括 label 元素）。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">fieldset</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">legend</span>&gt;</span>Choose your favorite monster<span class="tag">&lt;/<span class="name">legend</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">id</span>=<span class="string">&quot;kraken&quot;</span> <span class="attr">name</span>=<span class="string">&quot;monster&quot;</span> <span class="attr">value</span>=<span class="string">&quot;K&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;kraken&quot;</span>&gt;</span>Kraken<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">id</span>=<span class="string">&quot;sasquatch&quot;</span> <span class="attr">name</span>=<span class="string">&quot;monster&quot;</span> <span class="attr">value</span>=<span class="string">&quot;S&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;sasquatch&quot;</span>&gt;</span>Sasquatch<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">id</span>=<span class="string">&quot;mothman&quot;</span> <span class="attr">name</span>=<span class="string">&quot;monster&quot;</span> <span class="attr">value</span>=<span class="string">&quot;M&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;mothman&quot;</span>&gt;</span>Mothman<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">fieldset</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>死去的 tkinter 记忆开始攻击阿菇……</p>
+<p>可以设置 <code>disabled</code> 属性，这会使得其子组件无法使用，提交表单时也不会携带对应数据。</p>
+<h3 id="-10"><a href="#-10" class="headerlink" title="&lt;hgroup&gt;"></a><code>&lt;hgroup&gt;</code></h3><p>代表文档标题和与标题相关联的内容，它将一个 <code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code> 元素与一个或多个 <code>&lt;p&gt;</code> 元素组合在一起。实现主标题副标题会很方便。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">hgroup</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Frankenstein<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Or: The Modern Prometheus<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">hgroup</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="-11"><a href="#-11" class="headerlink" title="&lt;kbd&gt;"></a><code>&lt;kbd&gt;</code></h3><p>HTML 键盘输入元素用于表示用户输入，它将产生一个行内元素，以浏览器的默认 <code>monospace</code> 字体显示。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Save the document by pressing <span class="tag">&lt;<span class="name">kbd</span>&gt;</span>Ctrl<span class="tag">&lt;/<span class="name">kbd</span>&gt;</span> + <span class="tag">&lt;<span class="name">kbd</span>&gt;</span>S<span class="tag">&lt;/<span class="name">kbd</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="-12"><a href="#-12" class="headerlink" title="&lt;meter&gt;"></a><code>&lt;meter&gt;</code></h3><p>用来显示已知范围的标量值或者分数值。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;fuel&quot;</span>&gt;</span>Fuel level:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meter</span> <span class="attr">id</span>=<span class="string">&quot;fuel&quot;</span> <span class="attr">min</span>=<span class="string">&quot;0&quot;</span> <span class="attr">max</span>=<span class="string">&quot;100&quot;</span> <span class="attr">low</span>=<span class="string">&quot;33&quot;</span> <span class="attr">high</span>=<span class="string">&quot;66&quot;</span> <span class="attr">optimum</span>=<span class="string">&quot;80&quot;</span> <span class="attr">value</span>=<span class="string">&quot;50&quot;</span>&gt;</span>at 50/100<span class="tag">&lt;/<span class="name">meter</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>自带了很多属性：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meter#%E5%B1%9E%E6%80%A7">here</a></p>
+<h3 id="-13"><a href="#-13" class="headerlink" title="&lt;noscript&gt;"></a><code>&lt;noscript&gt;</code></h3><p>如果页面上的脚本类型不受支持或者当前在浏览器中关闭了脚本，则在该元素中定义脚本未被执行时的替代内容。<code>XSS</code> 有时候会利用这个元素。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">noscript</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- anchor linking to external file --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;http://www.mozilla.com/&quot;</span>&gt;</span>External Link<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">noscript</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Rocks!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="and-2"><a href="#and-2" class="headerlink" title="&lt;picture&gt; and &lt;source&gt;"></a><code>&lt;picture&gt; and &lt;source&gt;</code></h3><p>通过包含零或多个 <code>&lt;source&gt;</code> 元素和一个 <code>&lt;img&gt;</code> 元素来为不同的显示&#x2F;设备场景提供图像版本。浏览器会选择最匹配的子 <code>&lt;source&gt;</code> 元素，如果没有匹配的，就选择 <code>&lt;img&gt;</code> 元素的 <code>src</code> 属性中的 URL。然后，所选图像呈现在 <code>&lt;img&gt;</code> 元素占据的空间中。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--Change the browser window width to see the image change.--&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">picture</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">source</span> <span class="attr">srcset</span>=<span class="string">&quot;/media/cc0-images/surfer-240-200.jpg&quot;</span> <span class="attr">media</span>=<span class="string">&quot;(orientation: portrait)&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;/media/cc0-images/painted-hand-298-332.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">picture</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>自带了一些属性：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/picture#%E5%B1%9E%E6%80%A7">here</a></p>
+<h3 id="-14"><a href="#-14" class="headerlink" title="&lt;progress&gt;"></a><code>&lt;progress&gt;</code></h3><p>进度指示元素，用来做进度条。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;file&quot;</span>&gt;</span>File progress:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">progress</span> <span class="attr">id</span>=<span class="string">&quot;file&quot;</span> <span class="attr">max</span>=<span class="string">&quot;100&quot;</span> <span class="attr">value</span>=<span class="string">&quot;70&quot;</span>&gt;</span>70%<span class="tag">&lt;/<span class="name">progress</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="HTML属性"><a href="#HTML属性" class="headerlink" title="HTML属性"></a>HTML属性</h2><h3 id="accesskey"><a href="#accesskey" class="headerlink" title="accesskey"></a><code>accesskey</code></h3><p>为当前元素提供一个快捷键，属性值为一个可打印字符。</p>
+<p>但这个属性问题比较多：与系统快捷键冲突、指意不明、意外激活……能不用还是别用，但还是要知道一下。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">  If you need to relax, press the <span class="tag">&lt;<span class="name">strong</span>&gt;</span><span class="tag">&lt;<span class="name">u</span>&gt;</span>S<span class="tag">&lt;/<span class="name">u</span>&gt;</span><span class="tag">&lt;/<span class="name">strong</span>&gt;</span>tress reliever!</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">accesskey</span>=<span class="string">&quot;s&quot;</span>&gt;</span>Stress reliever<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="autocomplete"><a href="#autocomplete" class="headerlink" title="autocomplete"></a><code>autocomplete</code></h3><p>允许 web 开发人员指定用户代理是否有权限在填写表单字段值时提供自动帮助，并指导浏览器填写该字段的预期信息类型。</p>
+<p>可选的属性值比较多，参考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Attributes/autocomplete">autocomplete</a>.<br>我常用的是 <code>off</code>, 即禁止用户代理提供历史可选值（因为我觉得这很影响页面美观性）。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;firstName&quot;</span>&gt;</span>First Name:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;firstName&quot;</span> <span class="attr">id</span>=<span class="string">&quot;firstName&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">autocomplete</span>=<span class="string">&quot;given-name&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;lastName&quot;</span>&gt;</span>Last Name:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;lastName&quot;</span> <span class="attr">id</span>=<span class="string">&quot;lastName&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">autocomplete</span>=<span class="string">&quot;family-name&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;email&quot;</span>&gt;</span>Email:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span> <span class="attr">id</span>=<span class="string">&quot;email&quot;</span> <span class="attr">type</span>=<span class="string">&quot;email&quot;</span> <span class="attr">autocomplete</span>=<span class="string">&quot;off&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="autofocus"><a href="#autofocus" class="headerlink" title="autofocus"></a><code>autofocus</code></h3><p>上文中提到过，可以在页面加载时使当前元素自动获得用户焦点。</p>
+<h3 id="contenteditable"><a href="#contenteditable" class="headerlink" title="contenteditable"></a><code>contenteditable</code></h3><p>枚举属性，表示元素是否可被用户编辑，属性值为 <code>true</code> 或者 <code>false</code>。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">blockquote</span> <span class="attr">contenteditable</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Edit this content to add your own quote<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">blockquote</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="inert"><a href="#inert" class="headerlink" title="inert"></a><code>inert</code></h3><p>一个有趣的布尔属性，可以使本身及其所有子元素的用户交互事件被浏览器忽略，包括鼠标、键盘、焦点等事件。可以适当精简代码，增强可读性。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">inert</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://example.com&quot;</span>&gt;</span>Click<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="spellcheck"><a href="#spellcheck" class="headerlink" title="spellcheck"></a><code>spellcheck</code></h3><p>枚举属性，表示元素是否会对用户输入的值做拼写检查，属性值为 <code>true</code> 或 <code>false</code>.</p>
+<h3 id="translate"><a href="#translate" class="headerlink" title="translate"></a><code>translate</code></h3><p>枚举属性。规定制定元素是否需要翻译，属性值为 <code>yes</code> 或 <code>no</code>.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">small</span>&gt;</span>© 2020 <span class="tag">&lt;<span class="name">span</span> <span class="attr">translate</span>=<span class="string">&quot;no&quot;</span>&gt;</span>BrandName<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">small</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="元素顺序"><a href="#元素顺序" class="headerlink" title="&lt;head&gt;元素顺序"></a><code>&lt;head&gt;</code>元素顺序</h2><p>编写 HTML 的 <code>&lt;head&gt;</code> 元素时，元素建议遵循以下顺序，可以提高网页性能：</p>
+<ol>
+<li>preconnect</li>
+<li>script-async</li>
+<li>css-contains-@ import</li>
+<li>sync-js</li>
+<li>sync-css</li>
+<li>preload</li>
+<li>script-defer</li>
+<li>prefetch &#x2F; prerender</li>
+<li>seo-relative</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- preconnect --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;preconnect&quot;</span> <span class="attr">href</span>=<span class="string">&quot;https://cdn.example.com&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- script-async --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">async</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.example.com/js/analytics.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- css-contains-@ import --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="keyword">@import</span> url(<span class="string">&#x27;https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap&#x27;</span>);</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- sync-js --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/main.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- sync-css --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;css/styles.css&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- preload --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;preload&quot;</span> <span class="attr">href</span>=<span class="string">&quot;img/background.jpg&quot;</span> <span class="attr">as</span>=<span class="string">&quot;image&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- script-defer --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">defer</span> <span class="attr">src</span>=<span class="string">&quot;js/interactive.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- prefetch / prerender --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;prefetch&quot;</span> <span class="attr">href</span>=<span class="string">&quot;about.html&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;prerender&quot;</span> <span class="attr">href</span>=<span class="string">&quot;contact.html&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- seo-relative --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;canonical&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/index.html&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Other SEO related tags --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>我的网站<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;description&quot;</span> <span class="attr">content</span>=<span class="string">&quot;这是我的网站的描述。&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- 页面内容 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以使用 <code>capo.js</code> 工具，对 <code>&lt;head&gt;</code> 中的元素进行标注，快速识别和优化性能问题。GitHub 仓库地址：<a target="_blank" rel="noopener" href="https://github.com/rviscomi/capo.js">capo.js</a>.</p>
+<p>同时，官方还提供了对应的浏览器插件：<a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/capo-get-your-%EF%B9%A4%F0%9D%9A%91%F0%9D%9A%8E%F0%9D%9A%8A%F0%9D%9A%8D%EF%B9%A5/ohabpnaccigjhkkebjofhpmebofgpbeb?utm_source=ext_sidebar&hl=zh-CN">Capo: get your ﹤𝚑𝚎𝚊𝚍﹥ in order</a>,<br>这个插件可以直观地展示当前 Web 页面 <code>&lt;head&gt;</code> 中各元素加载用时的真实顺序以及排序后的顺序。</p>
+<p><img src="https://agu-img.oss-cn-hangzhou.aliyuncs.com/blog/20231006101948.png" alt="插件使用演示"></p>
+<h2 id="叨叨叨"><a href="#叨叨叨" class="headerlink" title="叨叨叨"></a>叨叨叨</h2><p>HTML 译为 <em>超文本标记语言</em>，与 Markdown 更相似而非 Golang 等编程语言。它的作用是定义网页内容的含义和结构。相比 CSS 和 JavaScript，我对 HTML 的重视程度一直不够，现在看来可以改变一下思想，HTML 其实才是一个网页的基石。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML">HTML - MDN</a></li>
+<li><a target="_blank" rel="noopener" href="https://weibo.com/1812166904/NbGRFCRtU">新浪微博 - Barret李靖</a></li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">📄首页</a></li>
+        
+          <li><a href="/archives/">📂归档</a></li>
+        
+          <li><a href="/friends/">👫友链</a></li>
+        
+          <li><a href="/categories/">🗂️分类</a></li>
+        
+          <li><a href="/tags/">🏷️标签</a></li>
+        
+          <li><a href="/about/">🌸关于</a></li>
+        
+          <li><a href="/log/">📖日志</a></li>
+        
+          <li><a href="/search/">🔍搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML-%E5%85%83%E7%B4%A0"><span class="toc-number">1.</span> <span class="toc-text">HTML 元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">&lt;abbr&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-1"><span class="toc-number">1.2.</span> <span class="toc-text">&lt;address&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-2"><span class="toc-number">1.3.</span> <span class="toc-text">&lt;bdi&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-3"><span class="toc-number">1.4.</span> <span class="toc-text">&lt;bdo&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-4"><span class="toc-number">1.5.</span> <span class="toc-text">&lt;caption&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-5"><span class="toc-number">1.6.</span> <span class="toc-text">&lt;cite&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-6"><span class="toc-number">1.7.</span> <span class="toc-text">&lt;data&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-7"><span class="toc-number">1.8.</span> <span class="toc-text">&lt;datalist&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-8"><span class="toc-number">1.9.</span> <span class="toc-text">&lt;dfn&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-9"><span class="toc-number">1.10.</span> <span class="toc-text">&lt;dialog&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#and"><span class="toc-number">1.11.</span> <span class="toc-text">&lt;details&gt; and &lt;summary&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#and-1"><span class="toc-number">1.12.</span> <span class="toc-text">&lt;fieldset&gt; and &lt;legend&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-10"><span class="toc-number">1.13.</span> <span class="toc-text">&lt;hgroup&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-11"><span class="toc-number">1.14.</span> <span class="toc-text">&lt;kbd&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-12"><span class="toc-number">1.15.</span> <span class="toc-text">&lt;meter&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-13"><span class="toc-number">1.16.</span> <span class="toc-text">&lt;noscript&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#and-2"><span class="toc-number">1.17.</span> <span class="toc-text">&lt;picture&gt; and &lt;source&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-14"><span class="toc-number">1.18.</span> <span class="toc-text">&lt;progress&gt;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML%E5%B1%9E%E6%80%A7"><span class="toc-number">2.</span> <span class="toc-text">HTML属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#accesskey"><span class="toc-number">2.1.</span> <span class="toc-text">accesskey</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#autocomplete"><span class="toc-number">2.2.</span> <span class="toc-text">autocomplete</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#autofocus"><span class="toc-number">2.3.</span> <span class="toc-text">autofocus</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#contenteditable"><span class="toc-number">2.4.</span> <span class="toc-text">contenteditable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#inert"><span class="toc-number">2.5.</span> <span class="toc-text">inert</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#spellcheck"><span class="toc-number">2.6.</span> <span class="toc-text">spellcheck</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#translate"><span class="toc-number">2.7.</span> <span class="toc-text">translate</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%83%E7%B4%A0%E9%A1%BA%E5%BA%8F"><span class="toc-number">3.</span> <span class="toc-text">&lt;head&gt;元素顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%A8%E5%8F%A8%E5%8F%A8"><span class="toc-number">4.</span> <span class="toc-text">叨叨叨</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2023/10/24/html-relearn/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&text=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&title=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&is_video=false&description=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTML的少见标签及&lt;head&gt;优化&body=Check out this article: https://blog.kinoko.fun/2023/10/24/html-relearn/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&title=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&title=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&title=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&title=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2023/10/24/html-relearn/&name=HTML的少见标签及&lt;head&gt;优化&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2023/10/24/html-relearn/&t=HTML的少见标签及&lt;head&gt;优化"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    <div class="footer-cnrecord">
+      <img id="gongan" alt class="gongan-logo"
+          src="/images/gongan.png" />
+      浙ICP备2023028448号-2
+    </div>
+    <div class="footer-copyright">
+      Copyright &copy;
+      
+      
+      2022-2025
+      阿菇kinoko
+    </div>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
