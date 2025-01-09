@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Android是由Google主导开发的一个基于Linux内核的开源操作系统，专为移动设备设计，如智能手机、平板电脑和智能穿戴设备。它提供了一个用户友好的界面，支持多种应用程序，用户可以通过Google Play商店下载和安装应用。Android的架构包括应用层、应用框架、库和Linux内核，允许开发者使用Java、Kotlin等编程语言创建应用。由于其开源特性，Android吸引了大量开发者和设">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅试Android开发">
+<meta property="og:url" content="https://blog.kinoko.fun/2025/01/09/start-andorid-development/index.html">
+<meta property="og:site_name" content="阿菇の博客">
+<meta property="og:description" content="Android是由Google主导开发的一个基于Linux内核的开源操作系统，专为移动设备设计，如智能手机、平板电脑和智能穿戴设备。它提供了一个用户友好的界面，支持多种应用程序，用户可以通过Google Play商店下载和安装应用。Android的架构包括应用层、应用框架、库和Linux内核，允许开发者使用Java、Kotlin等编程语言创建应用。由于其开源特性，Android吸引了大量开发者和设">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.ma5hr00m.top/2025/20250109183121.png">
+<meta property="og:image" content="https://img.ma5hr00m.top/2025/20250109183604.png">
+<meta property="og:image" content="https://img.ma5hr00m.top/2025/20250109185028.png">
+<meta property="og:image" content="https://img.ma5hr00m.top/2025/20250109185522.png">
+<meta property="og:image" content="https://img.ma5hr00m.top/2025/20250109192429.png">
+<meta property="og:image" content="https://img.ma5hr00m.top/2025/20250109194746.png">
+<meta property="og:image" content="https://img.ma5hr00m.top/2025/img_v3_02ic_2b2adb11-5e56-45c2-8343-f30b9e43cccg.jpg">
+<meta property="article:published_time" content="2025-01-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-09T12:12:56.957Z">
+<meta property="article:author" content="阿菇kinoko">
+<meta property="article:tag" content="Android开发">
+<meta property="article:tag" content="Android Studio">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.ma5hr00m.top/2025/20250109183121.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>浅试Android开发</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="阿菇の博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/01/07/oneplus/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2025/01/09/start-andorid-development/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&text=浅试Android开发"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&title=浅试Android开发"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&is_video=false&description=浅试Android开发"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=浅试Android开发&body=Check out this article: https://blog.kinoko.fun/2025/01/09/start-andorid-development/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&title=浅试Android开发"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&title=浅试Android开发"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&title=浅试Android开发"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&title=浅试Android开发"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&name=浅试Android开发&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&t=浅试Android开发"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">基础环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Android-Studio"><span class="toc-number">1.1.</span> <span class="toc-text">安装Android Studio</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85JDK"><span class="toc-number">1.2.</span> <span class="toc-text">安装JDK</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Android-Studio%E5%88%9B%E5%BB%BADemo"><span class="toc-number">2.</span> <span class="toc-text">使用Android Studio创建Demo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.1.</span> <span class="toc-text">创建项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B9%B6%E8%BF%90%E8%A1%8Cdemo"><span class="toc-number">2.2.</span> <span class="toc-text">创建虚拟机并运行demo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#empty-activity%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.3.</span> <span class="toc-text">empty activity项目结构介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%A7%E7%BB%AD%E8%AF%95%E6%8E%A2"><span class="toc-number">3.</span> <span class="toc-text">继续试探</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99app%E6%A0%B7%E5%BC%8F"><span class="toc-number">3.1.</span> <span class="toc-text">编写app样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MainActivity%E4%B8%BB%E6%B4%BB%E5%8A%A8"><span class="toc-number">3.2.</span> <span class="toc-text">MainActivity主活动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E4%B8%BAapk%E5%B9%B6%E5%AE%89%E8%A3%85%E5%9C%A8%E7%9C%9F%E5%AE%9E%E8%AE%BE%E5%A4%87"><span class="toc-number">3.3.</span> <span class="toc-text">打包为apk并安装在真实设备</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        浅试Android开发
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">阿菇kinoko</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-08T16:00:00.000Z" class="dt-published" itemprop="datePublished">2025-01-09</time>
+        
+        (Updated: <time datetime="2025-01-09T12:12:56.957Z" class="dt-updated" itemprop="dateModified">2025-01-09</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Android/">Android</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Android-Studio/" rel="tag">Android Studio</a>, <a class="p-category" href="/tags/Android%E5%BC%80%E5%8F%91/" rel="tag">Android开发</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>Android是由Google主导开发的一个基于Linux内核的开源操作系统，专为移动设备设计，如智能手机、平板电脑和智能穿戴设备。它提供了一个用户友好的界面，支持多种应用程序，用户可以通过Google Play商店下载和安装应用。Android的架构包括应用层、应用框架、库和Linux内核，允许开发者使用Java、Kotlin等编程语言创建应用。由于其开源特性，Android吸引了大量开发者和设备制造商，形成了一个庞大的生态系统，支持多种硬件平台和设备类型，使其成为全球最流行的移动操作系统之一。</p>
+<p>本篇是打打基础，因为想尝试编写Android Hook，所以先补充基本的Android开发知识。</p>
+<p>环境为windows10.</p>
+<h2 id="基础环境配置"><a href="#基础环境配置" class="headerlink" title="基础环境配置"></a>基础环境配置</h2><h3 id="安装Android-Studio"><a href="#安装Android-Studio" class="headerlink" title="安装Android Studio"></a>安装Android Studio</h3><p>先安装Jetbrains Toolbox，然后使用Toolbox安装Android Studio，非常省心，安装完成后点点点全部同意即可，新版本没有很复杂的配置选项。在Toolbox登录Jetbrains账户，会直接同步登录到对应的IDE，也不需要额外再登遍账户了。</p>
+<h3 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h3><p>windows的包管理工具已经相对成熟了，很好用。所以摒弃之前手动配置java环境的方法，直接使用scoop解决这一切，包括java的安装和java版本管理。</p>
+<p><img src="https://img.ma5hr00m.top/2025/20250109183121.png" alt="image.png"></p>
+<p>直接看下面几个指令即可，用过其他包管理工具的话直接就明白了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加Buceket</span></span><br><span class="line">scoop add bucket java</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">搜索openjdk</span></span><br><span class="line">scoop search openjdk</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装jdk8</span></span><br><span class="line">scoop install openjdk8-redhat</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装jdk17</span></span><br><span class="line">scoop install openjdk17</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">切换环境为jdk8</span></span><br><span class="line">scoop reset openjdk8-redhat</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用Android-Studio创建Demo"><a href="#使用Android-Studio创建Demo" class="headerlink" title="使用Android Studio创建Demo"></a>使用Android Studio创建Demo</h2><h3 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h3><p>New Project，选择空白项目，然后点点点Next+Finish即可。中间有个配置页，默认使用Kotlin语言，编写简单demo的话可以什么都不改，我Project Name更改为了Demo。</p>
+<p><img src="https://img.ma5hr00m.top/2025/20250109183604.png" alt="image.png"></p>
+<p>Finish之后弹出工作区页面完成空白项目创建。</p>
+<h3 id="创建虚拟机并运行demo"><a href="#创建虚拟机并运行demo" class="headerlink" title="创建虚拟机并运行demo"></a>创建虚拟机并运行demo</h3><p>在介绍项目结构之前，先创建一个开发测试用的Android虚拟机，创建位置为菜单栏-Tools-Device Manager，点击后右侧开启设备管理页面，选择Medium Phone API 35创建虚拟机，稍等片刻即可。</p>
+<p><img src="https://img.ma5hr00m.top/2025/20250109185028.png" alt="image.png"></p>
+<p>Android Studio的虚拟机自定义程度比较高，也可以选择使用WIFI无线连接设备，这里还不急，一会儿打包应用到手机上的时候再搞，开发阶段可以先用用虚拟机。</p>
+<p>事不宜迟，点击菜单栏-Run-Run ‘app’，可以直接将当前项目发布到手机上查看效果。</p>
+<p><img src="https://img.ma5hr00m.top/2025/20250109185522.png" alt="image.png"></p>
+<p>本地构建打包为apk再发布到自己手机上的流程与这个差别较大，后面再说。</p>
+<h3 id="empty-activity项目结构介绍"><a href="#empty-activity项目结构介绍" class="headerlink" title="empty activity项目结构介绍"></a>empty activity项目结构介绍</h3><ul>
+<li><code>.gradle</code>文件夹包含Gradle构建工具的相关文件，Gradle是Android项目的构建系统，负责依赖管理和构建过程。</li>
+<li><code>main</code>：这是主要的代码和资源目录。它包含：<ul>
+<li><code>java</code>：存放Java或Kotlin源代码的目录，通常会有一个与应用包名相对应的子目录。在空项目中，默认会有一个<code>MainActivity</code>类，这是应用的入口点。</li>
+<li><code>res</code>：存放应用资源的目录，包括图像、布局文件、字符串等。常见的子目录有：<ul>
+<li><code>drawable</code>：存放图像资源。</li>
+<li><code>mipmap</code>：存放应用图标的不同分辨率版本。</li>
+<li><code>values</code>：存放字符串、颜色、样式等资源的XML文件。</li>
+<li><code>xml</code>：可以存放其他XML配置文件。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>test</code>：用于存放本地单元测试代码，这些测试通常在JVM上运行。</li>
+<li><code>AndroidManifest.xml</code>是Android应用的核心配置文件，类似于一个注册表，定义了应用的基本信息和组件。这个文件包含了应用的包名、版本信息、权限声明、应用组件（如活动、服务、广播接收器和内容提供者）的注册，以及其他重要的配置信息。</li>
+</ul>
+<p>此处提到了一个重要概念，即<strong>活动（Activity</strong>）。</p>
+<p>在<code>AndroidManifest.xml</code>中，每个活动都需要在此注册，以便系统能够识别和管理它们。注册活动时，开发者可以指定活动的名称、启动模式、主题、图标等属性。此外，开发者还可以声明应用所需的权限，例如访问网络、读取联系人等。</p>
+<p>在Android开发中，活动是用户界面的一个重要组成部分，代表了应用中的一个单一屏幕。每个活动都可以包含用户界面元素，如按钮、文本框和图像等，用户与这些元素进行交互。活动的生命周期由系统管理，开发者可以通过重写生命周期方法（如<code>onCreate</code>、<code>onStart</code>、<code>onResume</code>、<code>onPause</code>、<code>onStop</code>和<code>onDestroy</code>）来处理活动的创建、显示、隐藏和销毁等状态。</p>
+<p>活动之间可以通过意图（Intent）进行交互，意图是一种消息机制，用于启动新的活动或与其他应用组件进行通信。通过这种方式，Android应用可以实现多屏幕的用户体验，允许用户在不同的活动之间导航。</p>
+<h2 id="继续试探"><a href="#继续试探" class="headerlink" title="继续试探"></a>继续试探</h2><h3 id="编写app样式"><a href="#编写app样式" class="headerlink" title="编写app样式"></a>编写app样式</h3><p>Android Studio初始化的空项目中应该是没有控制页面样式的文件，简单搜了搜是<code>main/res/layout/activity_main.xml</code>，手动创建，点进去后发现Android Studio提供了拖拽式可视化的编写前端页面的工具，感觉非常强大。</p>
+<p><img src="https://img.ma5hr00m.top/2025/20250109192429.png" alt="image.png"></p>
+<p>欸这个时候就要问了，不想用这种拖拽式的工具，想用代码写样式怎么办？点击<code>ctrl+b</code>即可直接切换到code页面。在编辑区的右上角有三个按钮，分别代表code、spilit和design模式，按自己需求切换即可。</p>
+<p><code>layout/activity_main.xml</code>文件是Android应用中用于定义用户界面的布局文件。它描述了在特定活动中显示的视图和布局结构。通过XML格式，开发者可以直观地定义界面的各个元素及其属性。我感觉很类似传统前端开发中的HTML。</p>
+<p>这里留个示范，在布局容器里添加了文本试图和按钮，并通过<code>layout_gravity</code>属性实现居中布局：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">&quot;vertical&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:padding</span>=<span class="string">&quot;16dp&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/textView&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">&quot;Hello, World!&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textSize</span>=<span class="string">&quot;24sp&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_gravity</span>=<span class="string">&quot;center&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/button&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">&quot;Click Me&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_gravity</span>=<span class="string">&quot;center&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="MainActivity主活动"><a href="#MainActivity主活动" class="headerlink" title="MainActivity主活动"></a>MainActivity主活动</h3><p><code>MainActivity</code>通常是Android应用的主活动，作为应用的入口点。它在应用启动时首先被创建，负责初始化应用的界面和逻辑。<code>MainActivity</code>的地位非常重要，因为它通常是用户首次与应用交互的地方，承载着应用的主要功能和内容。</p>
+<p>而我们创建的安卓应用的入口就是<code>main/java/xxx/MainActivity.kt</code>，这里列出代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> android.os.Bundle  </span><br><span class="line"><span class="keyword">import</span> androidx.activity.ComponentActivity  </span><br><span class="line"><span class="keyword">import</span> androidx.activity.compose.setContent  </span><br><span class="line"><span class="keyword">import</span> androidx.activity.enableEdgeToEdge  </span><br><span class="line"><span class="keyword">import</span> androidx.compose.foundation.layout.fillMaxSize  </span><br><span class="line"><span class="keyword">import</span> androidx.compose.foundation.layout.padding  </span><br><span class="line"><span class="keyword">import</span> androidx.compose.material3.Scaffold  </span><br><span class="line"><span class="keyword">import</span> androidx.compose.material3.Text  </span><br><span class="line"><span class="keyword">import</span> androidx.compose.runtime.Composable  </span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.Modifier  </span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.tooling.preview.Preview  </span><br><span class="line"><span class="keyword">import</span> com.example.demo.ui.theme.DemoTheme  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MainActivity</span> : <span class="type">ComponentActivity</span>() &#123;  </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;  </span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)  </span><br><span class="line">        enableEdgeToEdge()  </span><br><span class="line">        setContent &#123;  </span><br><span class="line">            DemoTheme &#123;  </span><br><span class="line">                Scaffold(modifier = Modifier.fillMaxSize()) &#123; innerPadding -&gt;  </span><br><span class="line">                    Greeting(  </span><br><span class="line">                        name = <span class="string">&quot;Android&quot;</span>,  </span><br><span class="line">                        modifier = Modifier.padding(innerPadding)  </span><br><span class="line">                    )  </span><br><span class="line">                &#125;  </span><br><span class="line">            &#125;        &#125;    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@Composable</span>  </span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">Greeting</span><span class="params">(name: <span class="type">String</span>, modifier: <span class="type">Modifier</span> = Modifier)</span></span> &#123;  </span><br><span class="line">    Text(  </span><br><span class="line">        text = <span class="string">&quot;Hello <span class="variable">$name</span>!&quot;</span>,  </span><br><span class="line">        modifier = modifier  </span><br><span class="line">    )  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@Preview(showBackground = true)</span>  </span><br><span class="line"><span class="meta">@Composable</span>  </span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">GreetingPreview</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    DemoTheme &#123;  </span><br><span class="line">        Greeting(<span class="string">&quot;Android&quot;</span>)  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>MainActivity.kt</code>是Android应用的主要活动文件，负责定义应用的行为和用户界面。在这个文件中，使用了Jetpack Compose，这是Android的现代UI工具包，允许开发者使用Kotlin代码构建用户界面，而不是传统的XML布局。</p>
+<p>在<code>MainActivity</code>类中，<code>onCreate</code>方法是活动的入口点，主要作用是设置活动的内容。在这里，调用了<code>setContent</code>方法来定义用户界面。通过<code>DemoTheme</code>，应用了主题样式。<code>Scaffold</code>是一个布局组件，提供了基本的应用结构，如顶部应用栏、底部导航等。<code>innerPadding</code>用于处理内容的内边距，以避免与系统UI重叠。</p>
+<p>像上个小标题中我列出的文本试图+按钮的代码，可以使用如下kotlin实现：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.os.Bundle</span><br><span class="line"><span class="keyword">import</span> androidx.activity.ComponentActivity</span><br><span class="line"><span class="keyword">import</span> androidx.activity.compose.setContent</span><br><span class="line"><span class="keyword">import</span> androidx.compose.foundation.layout.*</span><br><span class="line"><span class="keyword">import</span> androidx.compose.material3.Button</span><br><span class="line"><span class="keyword">import</span> androidx.compose.material3.Text</span><br><span class="line"><span class="keyword">import</span> androidx.compose.runtime.Composable</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.Alignment</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.Modifier</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.unit.dp</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.unit.sp</span><br><span class="line"><span class="keyword">import</span> com.example.demo.ui.theme.DemoTheme</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MainActivity</span> : <span class="type">ComponentActivity</span>() &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContent &#123;</span><br><span class="line">            DemoTheme &#123;</span><br><span class="line">                MainScreen()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">MainScreen</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 使用Column代替LinearLayout，设置垂直排列</span></span><br><span class="line">    Column(</span><br><span class="line">        modifier = Modifier</span><br><span class="line">            .fillMaxSize()</span><br><span class="line">            .padding(<span class="number">16.</span>dp),</span><br><span class="line">        horizontalAlignment = Alignment.CenterHorizontally,</span><br><span class="line">        verticalArrangement = Arrangement.Center</span><br><span class="line">    ) &#123;</span><br><span class="line">        <span class="comment">// TextView</span></span><br><span class="line">        Text(</span><br><span class="line">            text = <span class="string">&quot;Hello, World!&quot;</span>,</span><br><span class="line">            fontSize = <span class="number">24.</span>sp</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Button</span></span><br><span class="line">        Button(onClick = &#123; <span class="comment">/* <span class="doctag">TODO:</span> Handle button click */</span> &#125;) &#123;</span><br><span class="line">            Text(text = <span class="string">&quot;Click Me&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看起来也差不多。但现在好像都更推荐使用Jetpack Compose。</p>
+<p>主要原因是Hetpack Compose支持响应式编程，能够自动根据数据变化更新界面，简化了手动更新UI的过程。这种方式提高了开发效率，特别是在处理动态内容时，开发者可以更专注于业务逻辑而不是视图的状态管理。此外，Compose的可组合性使得开发者能够创建可重用的组件，增强了代码的可维护性和可读性。通过组合不同的UI元素，开发者可以快速构建复杂的界面，同时保持代码的清晰和结构化。</p>
+<p>虽然我的java依托，但搜搜语法也能直接上手试试。我编写了一个入门常见案例：点击后+1的按钮。常用前端框架都喜欢把这个小组件用在初始项目中。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.os.Bundle</span><br><span class="line"><span class="keyword">import</span> androidx.activity.ComponentActivity</span><br><span class="line"><span class="keyword">import</span> androidx.activity.compose.setContent</span><br><span class="line"><span class="keyword">import</span> androidx.compose.foundation.layout.*</span><br><span class="line"><span class="keyword">import</span> androidx.compose.material3.Button</span><br><span class="line"><span class="keyword">import</span> androidx.compose.material3.Text</span><br><span class="line"><span class="keyword">import</span> androidx.compose.runtime.*</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.Alignment</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.Modifier</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.unit.dp</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.unit.sp</span><br><span class="line"><span class="keyword">import</span> com.example.demo.ui.theme.DemoTheme</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MainActivity</span> : <span class="type">ComponentActivity</span>() &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContent &#123;</span><br><span class="line">            DemoTheme &#123;</span><br><span class="line">                MainScreen()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">MainScreen</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> count <span class="keyword">by</span> remember &#123; mutableStateOf(<span class="number">0</span>) &#125;</span><br><span class="line"></span><br><span class="line">    Column(</span><br><span class="line">        modifier = Modifier</span><br><span class="line">            .fillMaxSize()</span><br><span class="line">            .padding(<span class="number">16.</span>dp),</span><br><span class="line">        horizontalAlignment = Alignment.CenterHorizontally,</span><br><span class="line">        verticalArrangement = Arrangement.Center</span><br><span class="line">    ) &#123;</span><br><span class="line">        Text(</span><br><span class="line">            text = count.toString(),</span><br><span class="line">            fontSize = <span class="number">48.</span>sp</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        Spacer(modifier = Modifier.height(<span class="number">16.</span>dp))</span><br><span class="line"></span><br><span class="line">        Button(onClick = &#123; count++ &#125;) &#123;</span><br><span class="line">            Text(text = <span class="string">&quot;Click Me&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Spacer(modifier = Modifier.weight(<span class="number">1f</span>))</span><br><span class="line"></span><br><span class="line">        Text(</span><br><span class="line">            text = <span class="string">&quot;Hello Kinoko&quot;</span>,</span><br><span class="line">            modifier = Modifier.align(Alignment.CenterHorizontally)</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.ma5hr00m.top/2025/20250109194746.png" alt="image.png"></p>
+<h3 id="打包为apk并安装在真实设备"><a href="#打包为apk并安装在真实设备" class="headerlink" title="打包为apk并安装在真实设备"></a>打包为apk并安装在真实设备</h3><p>有两种方式，命令行打包和IDE打包，先尝试后者。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scoop install gradle</span><br></pre></td></tr></table></figure>
+
+<p>Android Studio菜单栏Build-Build App Bundle(s)&#x2F;APK(s)-Build APK(s)，稍等片刻就会自动打包，打包可以获得debug版本的apk安装包，路径为<code>app/build/outputs/apk/debug/app-debug.apk</code>，usb数据线连接手机后使用adb安装即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb -s xxx install C:\Users\xxx\AndroidStudioProjects\Demo\app\build\outputs\apk\debug\app-debug.apk</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>我这里因为同时连接了显示器和手机，所以用<code>-s</code>指定设备</p>
+</blockquote>
+<p>经检验，debug版本的app在手机上也可以正常安装使用。</p>
+<p><img src="https://img.ma5hr00m.top/2025/img_v3_02ic_2b2adb11-5e56-45c2-8343-f30b9e43cccg.jpg" alt="img_v3_02ic_2b2adb11-5e56-45c2-8343-f30b9e43cccg.jpg"></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">📄首页</a></li>
+        
+          <li><a href="/archives/">📂归档</a></li>
+        
+          <li><a href="/friends/">👫友链</a></li>
+        
+          <li><a href="/categories/">🗂️分类</a></li>
+        
+          <li><a href="/tags/">🏷️标签</a></li>
+        
+          <li><a href="/about/">🌸关于</a></li>
+        
+          <li><a href="/log/">📖日志</a></li>
+        
+          <li><a href="/search/">🔍搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">基础环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Android-Studio"><span class="toc-number">1.1.</span> <span class="toc-text">安装Android Studio</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85JDK"><span class="toc-number">1.2.</span> <span class="toc-text">安装JDK</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Android-Studio%E5%88%9B%E5%BB%BADemo"><span class="toc-number">2.</span> <span class="toc-text">使用Android Studio创建Demo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.1.</span> <span class="toc-text">创建项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B9%B6%E8%BF%90%E8%A1%8Cdemo"><span class="toc-number">2.2.</span> <span class="toc-text">创建虚拟机并运行demo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#empty-activity%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.3.</span> <span class="toc-text">empty activity项目结构介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%A7%E7%BB%AD%E8%AF%95%E6%8E%A2"><span class="toc-number">3.</span> <span class="toc-text">继续试探</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99app%E6%A0%B7%E5%BC%8F"><span class="toc-number">3.1.</span> <span class="toc-text">编写app样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MainActivity%E4%B8%BB%E6%B4%BB%E5%8A%A8"><span class="toc-number">3.2.</span> <span class="toc-text">MainActivity主活动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E4%B8%BAapk%E5%B9%B6%E5%AE%89%E8%A3%85%E5%9C%A8%E7%9C%9F%E5%AE%9E%E8%AE%BE%E5%A4%87"><span class="toc-number">3.3.</span> <span class="toc-text">打包为apk并安装在真实设备</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2025/01/09/start-andorid-development/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&text=浅试Android开发"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&title=浅试Android开发"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&is_video=false&description=浅试Android开发"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=浅试Android开发&body=Check out this article: https://blog.kinoko.fun/2025/01/09/start-andorid-development/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&title=浅试Android开发"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&title=浅试Android开发"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&title=浅试Android开发"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&title=浅试Android开发"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&name=浅试Android开发&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2025/01/09/start-andorid-development/&t=浅试Android开发"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    <div class="footer-cnrecord">
+      <img id="gongan" alt class="gongan-logo"
+          src="/images/gongan.png" />
+      浙ICP备2023028448号-2
+    </div>
+    <div class="footer-copyright">
+      Copyright &copy;
+      
+      
+      2022-2025
+      阿菇kinoko
+    </div>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
