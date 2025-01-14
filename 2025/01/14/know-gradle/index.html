@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="一句话概述，Gradle 就是一个运行在 JVM 上的自动化的项目构建工具，用来帮助我们自动构建项目。 对于开发者来说，Gradle 的主要作用主要有 3 个：  项目构建：提供标准的、跨平台的自动化项目构建方式。 依赖管理：方便快捷的管理项目依赖的资源（jar 包），避免资源间的版本冲突问题。 统一开发结构：提供标准的、统一的项目结构。   不知道从什么时候开始，现在用列表就会感觉自己是AI（汗">
+<meta property="og:type" content="article">
+<meta property="og:title" content="速速了解Gradle构建工具">
+<meta property="og:url" content="https://blog.kinoko.fun/2025/01/14/know-gradle/index.html">
+<meta property="og:site_name" content="阿菇の博客">
+<meta property="og:description" content="一句话概述，Gradle 就是一个运行在 JVM 上的自动化的项目构建工具，用来帮助我们自动构建项目。 对于开发者来说，Gradle 的主要作用主要有 3 个：  项目构建：提供标准的、跨平台的自动化项目构建方式。 依赖管理：方便快捷的管理项目依赖的资源（jar 包），避免资源间的版本冲突问题。 统一开发结构：提供标准的、统一的项目结构。   不知道从什么时候开始，现在用列表就会感觉自己是AI（汗">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-14T11:21:20.243Z">
+<meta property="article:author" content="阿菇kinoko">
+<meta property="article:tag" content="gradle">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>速速了解Gradle构建工具</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="阿菇の博客" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/01/09/start-andorid-development/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2025/01/14/know-gradle/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&text=速速了解Gradle构建工具"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&title=速速了解Gradle构建工具"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&is_video=false&description=速速了解Gradle构建工具"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=速速了解Gradle构建工具&body=Check out this article: https://blog.kinoko.fun/2025/01/14/know-gradle/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&title=速速了解Gradle构建工具"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&title=速速了解Gradle构建工具"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&title=速速了解Gradle构建工具"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&title=速速了解Gradle构建工具"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&name=速速了解Gradle构建工具&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2025/01/14/know-gradle/&t=速速了解Gradle构建工具"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#gradle%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%BB%84%E6%88%90"><span class="toc-number">1.</span> <span class="toc-text">gradle配置文件组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Project%E4%B8%8ETask"><span class="toc-number">1.1.</span> <span class="toc-text">Project与Task</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E4%BE%9D%E8%B5%96%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text">任务依赖示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C"><span class="toc-number">1.4.</span> <span class="toc-text">任务的执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90xposed%E6%A8%A1%E5%9D%97%E7%9A%84%E6%A8%A1%E5%9D%97%E7%BA%A7build-gradle"><span class="toc-number">2.</span> <span class="toc-text">分析xposed模块的模块级build.gradle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84gradle%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">常见的gradle配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-build-gradle-Module%E7%BA%A7%E5%88%AB"><span class="toc-number">3.1.</span> <span class="toc-text">1. build.gradle (Module级别)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-build-gradle-%E9%A1%B9%E7%9B%AE%E7%BA%A7%E5%88%AB"><span class="toc-number">3.2.</span> <span class="toc-text">2. build.gradle (项目级别)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-gradle-properties"><span class="toc-number">3.3.</span> <span class="toc-text">3. gradle.properties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-gradlew-Linux-Mac"><span class="toc-number">3.4.</span> <span class="toc-text">4. gradlew (Linux&#x2F;Mac)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-gradlew-bat-Windows"><span class="toc-number">3.5.</span> <span class="toc-text">5. gradlew.bat (Windows)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-local-properties"><span class="toc-number">3.6.</span> <span class="toc-text">6. local.properties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-settings-gradle"><span class="toc-number">3.7.</span> <span class="toc-text">7. settings.gradle</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="toc-number">4.</span> <span class="toc-text">参考文档</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        速速了解Gradle构建工具
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">阿菇kinoko</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-13T16:00:00.000Z" class="dt-published" itemprop="datePublished">2025-01-14</time>
+        
+        (Updated: <time datetime="2025-01-14T11:21:20.243Z" class="dt-updated" itemprop="dateModified">2025-01-14</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Gradle/">Gradle</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/android/" rel="tag">android</a>, <a class="p-category" href="/tags/gradle/" rel="tag">gradle</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>一句话概述，Gradle 就是一个运行在 JVM 上的自动化的项目构建工具，用来帮助我们自动构建项目。</p>
+<p>对于开发者来说，Gradle 的主要作用主要有 3 个：</p>
+<ol>
+<li><strong>项目构建</strong>：提供标准的、跨平台的自动化项目构建方式。</li>
+<li><strong>依赖管理</strong>：方便快捷的管理项目依赖的资源（jar 包），避免资源间的版本冲突问题。</li>
+<li><strong>统一开发结构</strong>：提供标准的、统一的项目结构。</li>
+</ol>
+<blockquote>
+<p>不知道从什么时候开始，现在用列表就会感觉自己是AI（汗）</p>
+</blockquote>
+<hr>
+<p>Gradle是一个现代化的构建自动化工具，首次发布于2007年。它的出现是为了应对当时构建工具的局限性，尤其是Ant和Maven等工具在灵活性和可扩展性方面的不足。Gradle的设计理念是结合了这两者的优点，同时引入了更强大的功能和更灵活的构建模型。</p>
+<p>最初，Gradle用于Java项目的构建。它采用了一种基于Groovy的领域特定语言（DSL），使得构建脚本的编写更加简洁和易于理解。Gradle的灵活性使得它能够支持多种编程语言和平台，包括但不限于Java、Groovy、Kotlin、Scala、Android等。随着时间的推移，Gradle逐渐成为Android开发的标准构建工具，Android Studio也将其作为默认构建系统。</p>
+<blockquote>
+<p>Groovy是一种基于Java平台的动态语言，旨在提高Java开发的生产力。它于2003年首次发布，作为一种简化Java编程的语言，Groovy结合了面向对象编程和动态编程的特性，允许开发者以更简洁和灵活的方式编写代码。</p>
+</blockquote>
+<p>Gradle的核心特性之一是其增量构建能力，这意味着它只会重新构建那些发生变化的部分，从而提高构建效率。此外，Gradle还支持多项目构建，允许开发者在一个构建中管理多个模块和项目，这在大型应用开发中尤为重要。在构建工具（如Gradle）、Web开发（如Grails框架）和测试（如Spock框架）等多个领域中得到了广泛使用。</p>
+<blockquote>
+<p>可以看看github仓库：<a target="_blank" rel="noopener" href="https://github.com/gradle/gradle">Gradle GitHub Repository</a>。</p>
+</blockquote>
+<h2 id="gradle配置文件组成"><a href="#gradle配置文件组成" class="headerlink" title="gradle配置文件组成"></a>gradle配置文件组成</h2><p>在Gradle中，构建过程的基本组成部分包括Project和Task。每个待构建的工程被称为Project，而构建一个Project所需执行的一系列操作则被称为Task。通过这些Task，Gradle能够完成从编译到打包等一系列构建过程。</p>
+<h3 id="Project与Task"><a href="#Project与Task" class="headerlink" title="Project与Task"></a>Project与Task</h3><p>每个Project可以包含多个Task，这些Task代表了构建过程中的不同步骤。例如，在构建一个Android应用的过程中，可能会涉及以下Task：</p>
+<ul>
+<li><strong>Java源码编译</strong>：将Java源代码编译成字节码。</li>
+<li><strong>资源文件编译</strong>：处理XML、图片等资源文件。</li>
+<li><strong>Lint检查</strong>：对代码进行静态分析，检查潜在问题。</li>
+<li><strong>打包</strong>：将编译后的代码和资源打包成最终的APK文件。</li>
+</ul>
+<p>以下是一个相对完整的示例，展示了如何在<code>build.gradle</code>文件中定义Task，作用直接以注释的形式标准了，这里不再重复介绍：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个简单的Java项目</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;java&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个Task，用于编译Java源文件</span></span><br><span class="line">task compileJava &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="string">&#x27;Compiling Java source files...&#x27;</span></span><br><span class="line">        <span class="comment">// 这里可以添加实际的编译逻辑，例如调用javac命令</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个Task，用于运行单元测试</span></span><br><span class="line">task runTests &#123;</span><br><span class="line">    dependsOn compileJava <span class="comment">// 依赖于compileJava任务</span></span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="string">&#x27;Running unit tests...&#x27;</span></span><br><span class="line">        <span class="comment">// 这里可以添加实际的测试逻辑，例如调用JUnit</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个Task，用于打包应用</span></span><br><span class="line">task packageApp &#123;</span><br><span class="line">    dependsOn runTests <span class="comment">// 依赖于runTests任务</span></span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="string">&#x27;Packaging the application into a JAR file...&#x27;</span></span><br><span class="line">        <span class="comment">// 这里可以添加实际的打包逻辑，例如调用jar命令</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个Task，用于清理构建输出</span></span><br><span class="line">task clean &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="string">&#x27;Cleaning up build outputs...&#x27;</span></span><br><span class="line">        <span class="comment">// 这里可以添加实际的清理逻辑，例如删除生成的文件</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个顶级任务，用于构建整个项目</span></span><br><span class="line">task build &#123;</span><br><span class="line">    dependsOn packageApp <span class="comment">// 依赖于packageApp任务</span></span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="string">&#x27;Building the project...&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个任务，用于执行所有任务的顺序</span></span><br><span class="line">task fullBuild &#123;</span><br><span class="line">    dependsOn clean, build <span class="comment">// 先执行clean，再执行build</span></span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="string">&#x27;Full build process completed!&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><p>Gradle的插件系统是其强大功能的核心。插件的主要作用是定义和执行Task。为了使Gradle能够正常工作并完成构建流程，必须导入合适的插件。这些插件中定义了构建Project所需的一系列Task，并负责执行相应的Task。</p>
+<p>在Android项目中，通常在app模块的<code>build.gradle</code>文件的第一行应用插件，例如：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.android.application&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这行代码的意思是应用“com.android.application”插件来构建app模块。这个插件负责定义并执行Java源码编译、资源文件编译、打包等一系列Task。</p>
+<p>在“com.android.application”插件中，定义了以下四个顶级任务：</p>
+<ul>
+<li><strong>assemble</strong>：构建项目的输出（APK文件）。</li>
+<li><strong>check</strong>：进行校验工作，确保代码质量和构建的有效性。</li>
+<li><strong>build</strong>：执行<code>assemble</code>任务和<code>check</code>任务，通常用于完整的构建过程。</li>
+<li><strong>clean</strong>：清除项目的输出，删除生成的APK文件和其他构建产物。</li>
+</ul>
+<p>当我们执行一个任务时，Gradle会自动处理任务之间的依赖关系。例如，执行<code>assemble</code>任务时，Gradle会自动执行<code>assembleDebug</code>和<code>assembleRelease</code>任务，因为一个Android项目通常需要生成debug和release两个版本的APK。</p>
+<h3 id="任务依赖示例"><a href="#任务依赖示例" class="headerlink" title="任务依赖示例"></a>任务依赖示例</h3><p>以下是一个示例，展示了如何定义任务及其依赖关系：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">task compileJava &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="string">&#x27;Compiling Java source files...&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task packageApp(<span class="attr">dependsOn:</span> compileJava) &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="string">&#x27;Packaging the application...&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task build(<span class="attr">dependsOn:</span> packageApp) &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="string">&#x27;Building the project...&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，定义了三个任务：<code>compileJava</code>、<code>packageApp</code>和<code>build</code>。<code>packageApp</code>任务依赖于<code>compileJava</code>任务，而<code>build</code>任务依赖于<code>packageApp</code>任务。当执行<code>build</code>任务时，Gradle会自动执行<code>packageApp</code>和<code>compileJava</code>任务，确保构建过程的顺序。</p>
+<h3 id="任务的执行"><a href="#任务的执行" class="headerlink" title="任务的执行"></a>任务的执行</h3><p>在命令行中，可以通过以下命令执行特定的任务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew build</span><br></pre></td></tr></table></figure>
+
+<p>这条命令会触发<code>build</code>任务，Gradle会自动处理所有依赖的任务并按顺序执行。</p>
+<h2 id="分析xposed模块的模块级build-gradle"><a href="#分析xposed模块的模块级build-gradle" class="headerlink" title="分析xposed模块的模块级build.gradle"></a>分析xposed模块的模块级build.gradle</h2><p>不必多说，直接上代码即可：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    <span class="comment">// 应用Android应用插件，启用Android构建功能</span></span><br><span class="line">    alias(libs.plugins.android.application) </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    <span class="comment">// 定义应用的命名空间，通常与包名相同</span></span><br><span class="line">    namespace <span class="string">&#x27;com.xposed.demo.hookdemo&#x27;</span> </span><br><span class="line">    <span class="comment">// 设置编译SDK版本为34</span></span><br><span class="line">    compileSdk <span class="number">34</span> </span><br><span class="line"></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        <span class="comment">// 应用的唯一标识符，通常是反向域名格式</span></span><br><span class="line">        applicationId <span class="string">&quot;com.xposed.demo.hookdemo&quot;</span> </span><br><span class="line">        <span class="comment">// 设置应用支持的最低SDK版本为24（Android 7.0）</span></span><br><span class="line">        minSdk <span class="number">24</span> </span><br><span class="line">        <span class="comment">// 设置应用的目标SDK版本为34</span></span><br><span class="line">        targetSdk <span class="number">34</span> </span><br><span class="line">        <span class="comment">// 应用的版本代码，整数值，通常在每次发布时递增</span></span><br><span class="line">        versionCode <span class="number">1</span> </span><br><span class="line">        <span class="comment">// 应用的版本名称，通常是用户可见的字符串</span></span><br><span class="line">        versionName <span class="string">&quot;1.0&quot;</span> </span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置测试运行器，用于运行Android测试</span></span><br><span class="line">        testInstrumentationRunner <span class="string">&quot;androidx.test.runner.AndroidJUnitRunner&quot;</span> </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        <span class="comment">// 定义构建类型的配置</span></span><br><span class="line">        release &#123;</span><br><span class="line">            <span class="comment">// 在发布版本中禁用代码混淆</span></span><br><span class="line">            minifyEnabled <span class="keyword">false</span> </span><br><span class="line">            <span class="comment">// 指定ProGuard配置文件，使用默认的优化文件和自定义的规则文件</span></span><br><span class="line">            proguardFiles getDefaultProguardFile(<span class="string">&#x27;proguard-android-optimize.txt&#x27;</span>), <span class="string">&#x27;proguard-rules.pro&#x27;</span> </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 可以在这里添加其他构建类型，例如debug</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    compileOptions &#123;</span><br><span class="line">        <span class="comment">// 设置源代码兼容性为Java 11</span></span><br><span class="line">        <span class="keyword">sourceCompatibility</span> JavaVersion.VERSION_11 </span><br><span class="line">        <span class="comment">// 设置目标代码兼容性为Java 11</span></span><br><span class="line">        <span class="keyword">targetCompatibility</span> JavaVersion.VERSION_11 </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    <span class="comment">// 添加AndroidX AppCompat库作为依赖，提供向后兼容的功能</span></span><br><span class="line">    implementation libs.appcompat </span><br><span class="line">    <span class="comment">// 添加Material Design库作为依赖，提供Material组件</span></span><br><span class="line">    implementation libs.material </span><br><span class="line">    <span class="comment">// 添加JUnit库用于单元测试</span></span><br><span class="line">    testImplementation libs.junit </span><br><span class="line">    <span class="comment">// 添加扩展JUnit库用于Android测试</span></span><br><span class="line">    androidTestImplementation libs.ext.junit </span><br><span class="line">    <span class="comment">// 添加Espresso库用于UI测试</span></span><br><span class="line">    androidTestImplementation libs.espresso.core </span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加Xposed API作为编译时依赖，不会打包到APK中</span></span><br><span class="line">    compileOnly <span class="string">&#x27;de.robv.android.xposed:api:82&#x27;</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后这里再了解下各个模块的作用（其实根据模块名就可以理解了，这里多唠唠）：</p>
+<ul>
+<li>**android { }**：这个块用于定义Android项目的构建配置。所有与Android构建相关的设置都在这里进行配置。</li>
+<li>**defaultConfig { }**：在<code>android</code>块内，<code>defaultConfig</code>用于定义应用的基本配置。</li>
+<li>**buildTypes { }**：在<code>android</code>块内，<code>buildTypes</code>用于定义不同构建类型的配置。</li>
+<li>**compileOptions { }**：在<code>android</code>块内，<code>compileOptions</code>用于设置Java编译选项。</li>
+<li>**dependencies { }**：用于定义项目的依赖项，指定所需的库和框架。</li>
+</ul>
+<h2 id="常见的gradle配置文件"><a href="#常见的gradle配置文件" class="headerlink" title="常见的gradle配置文件"></a>常见的gradle配置文件</h2><p>这里以Android java项目为例进行介绍。</p>
+<p>Android项目通常会有两个<code>build.gradle</code>文件：一个是项目级别的<code>build.gradle</code>，另一个是模块级别的<code>build.gradle</code>。项目级别的<code>build.gradle</code>用于配置整个项目的构建设置，包括所有模块的依赖和构建脚本，而模块级别的<code>build.gradle</code>则专注于特定模块的构建配置，如应用的SDK版本、依赖项和构建类型等。</p>
+<h3 id="1-build-gradle-Module级别"><a href="#1-build-gradle-Module级别" class="headerlink" title="1. build.gradle (Module级别)"></a>1. <code>build.gradle</code> (Module级别)</h3><p>这个文件定义了特定模块的构建配置，包括应用的SDK版本、依赖项、构建类型等。每个模块（如app模块）都有自己的<code>build.gradle</code>文件，用于指定该模块的构建规则和依赖关系。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id <span class="string">&#x27;com.android.application&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    namespace <span class="string">&#x27;com.example.app&#x27;</span></span><br><span class="line">    compileSdk <span class="number">34</span></span><br><span class="line"></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        applicationId <span class="string">&quot;com.example.app&quot;</span></span><br><span class="line">        minSdk <span class="number">21</span></span><br><span class="line">        targetSdk <span class="number">34</span></span><br><span class="line">        versionCode <span class="number">1</span></span><br><span class="line">        versionName <span class="string">&quot;1.0&quot;</span></span><br><span class="line">        testInstrumentationRunner <span class="string">&quot;androidx.test.runner.AndroidJUnitRunner&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled <span class="literal">false</span></span><br><span class="line">            proguardFiles getDefaultProguardFile(<span class="string">&#x27;proguard-android-optimize.txt&#x27;</span>), <span class="string">&#x27;proguard-rules.pro&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    compileOptions &#123;</span><br><span class="line">        sourceCompatibility JavaVersion.VERSION_11</span><br><span class="line">        targetCompatibility JavaVersion.VERSION_11</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    implementation <span class="string">&#x27;androidx.appcompat:appcompat:1.3.1&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;com.google.android.material:material:1.4.0&#x27;</span></span><br><span class="line">    testImplementation <span class="string">&#x27;junit:junit:4.13.2&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.ext:junit:1.1.3&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.espresso:espresso-core:3.4.0&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-build-gradle-项目级别"><a href="#2-build-gradle-项目级别" class="headerlink" title="2. build.gradle (项目级别)"></a>2. <code>build.gradle</code> (项目级别)</h3><p>这个文件用于配置整个项目的构建设置，包括所有模块的依赖和构建脚本。它通常包含Gradle插件的版本和全局的仓库配置。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Top-level build file where you can add configuration options common to all sub-projects/modules.  </span></span><br><span class="line">plugins &#123;  </span><br><span class="line">	alias(libs.plugins.android.application) apply <span class="literal">false</span>  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-gradle-properties"><a href="#3-gradle-properties" class="headerlink" title="3. gradle.properties"></a>3. <code>gradle.properties</code></h3><p>这个文件用于定义Gradle构建的全局属性和配置选项，例如JVM参数、AndroidX支持等。它可以帮助简化<code>build.gradle</code>文件中的配置。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Gradle properties</span></span><br><span class="line"><span class="attr">org.gradle.jvmargs</span>=<span class="string">-Xmx2048m</span></span><br><span class="line"><span class="attr">android.useAndroidX</span>=<span class="string">true</span></span><br><span class="line"><span class="attr">android.enableJetifier</span>=<span class="string">true</span></span><br><span class="line"><span class="attr">keystoreFile</span>=<span class="string">path/to/keystore.jks</span></span><br><span class="line"><span class="attr">keyAlias</span>=<span class="string">myKeyAlias</span></span><br><span class="line"><span class="attr">keyPassword</span>=<span class="string">myKeyPassword</span></span><br><span class="line"><span class="attr">storePassword</span>=<span class="string">myStorePassword</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-gradlew-Linux-Mac"><a href="#4-gradlew-Linux-Mac" class="headerlink" title="4. gradlew (Linux&#x2F;Mac)"></a>4. <code>gradlew</code> (Linux&#x2F;Mac)</h3><p>这是Gradle Wrapper的脚本文件，允许用户在没有全局安装Gradle的情况下运行Gradle命令。它确保使用项目中指定的Gradle版本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env sh</span></span><br><span class="line"><span class="comment"># Gradle wrapper script for Unix</span></span><br><span class="line">GRADLE_VERSION=7.0.4</span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$GRADLE_HOME</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    GRADLE_HOME=<span class="string">&quot;<span class="variable">$PWD</span>/gradle-<span class="variable">$GRADLE_VERSION</span>&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">exec</span> <span class="string">&quot;<span class="variable">$GRADLE_HOME</span>/bin/gradle&quot;</span> <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-gradlew-bat-Windows"><a href="#5-gradlew-bat-Windows" class="headerlink" title="5. gradlew.bat (Windows)"></a>5. <code>gradlew.bat</code> (Windows)</h3><p>这是Windows系统下的Gradle Wrapper批处理文件，功能与<code>gradlew</code>相同，允许在没有全局安装Gradle的情况下运行Gradle命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@echo off</span><br><span class="line">setlocal</span><br><span class="line">set GRADLE_VERSION=7.0.4</span><br><span class="line">if &quot;%GRADLE_HOME%&quot;==&quot;&quot; (</span><br><span class="line">    set GRADLE_HOME=%~dp0gradle-%GRADLE_VERSION%</span><br><span class="line">)</span><br><span class="line">&quot;%GRADLE_HOME%\bin\gradle&quot; %*</span><br><span class="line">endlocal</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-local-properties"><a href="#6-local-properties" class="headerlink" title="6. local.properties"></a>6. <code>local.properties</code></h3><p>这个文件用于定义本地属性，例如Android SDK的路径。它通常在本地开发环境中使用，确保Gradle能够找到SDK。这个文件不应被版本控制，因为它包含特定于开发者的配置。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">sdk.dir</span>=<span class="string">/Users/username/Library/Android/sdk</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="7-settings-gradle"><a href="#7-settings-gradle" class="headerlink" title="7. settings.gradle"></a>7. <code>settings.gradle</code></h3><p>这个文件用于定义项目中包含的模块。它允许Gradle一次性构建所有模块，适用于多模块项目。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">include <span class="string">&#x27;:app&#x27;</span></span><br><span class="line">include <span class="string">&#x27;:ModuleA&#x27;</span></span><br><span class="line">include <span class="string">&#x27;:ModuleB&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://javaguide.cn/tools/gradle/gradle-core-concepts.html">Gradle核心概念总结 | JavaGuide</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.supremepole.com/cs/other/build-tool/gradle/intro.html">Gradle介绍 | 尼尔的编程专栏</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Im-Victor/p/10787729.html">十分钟理解Gradle - mingruqi - 博客园</a></li>
+<li><a target="_blank" rel="noopener" href="https://dyzhou.gitbooks.io/gradle-learning/content/gradleji_chu_yu_fa.html">gradle基础语法 | gradle学习笔记</a></li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">📄首页</a></li>
+        
+          <li><a href="/archives/">📂归档</a></li>
+        
+          <li><a href="/friends/">👫友链</a></li>
+        
+          <li><a href="/categories/">🗂️分类</a></li>
+        
+          <li><a href="/tags/">🏷️标签</a></li>
+        
+          <li><a href="/about/">🌸关于</a></li>
+        
+          <li><a href="/log/">📖日志</a></li>
+        
+          <li><a href="/search/">🔍搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#gradle%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%BB%84%E6%88%90"><span class="toc-number">1.</span> <span class="toc-text">gradle配置文件组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Project%E4%B8%8ETask"><span class="toc-number">1.1.</span> <span class="toc-text">Project与Task</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E4%BE%9D%E8%B5%96%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text">任务依赖示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C"><span class="toc-number">1.4.</span> <span class="toc-text">任务的执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90xposed%E6%A8%A1%E5%9D%97%E7%9A%84%E6%A8%A1%E5%9D%97%E7%BA%A7build-gradle"><span class="toc-number">2.</span> <span class="toc-text">分析xposed模块的模块级build.gradle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84gradle%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">常见的gradle配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-build-gradle-Module%E7%BA%A7%E5%88%AB"><span class="toc-number">3.1.</span> <span class="toc-text">1. build.gradle (Module级别)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-build-gradle-%E9%A1%B9%E7%9B%AE%E7%BA%A7%E5%88%AB"><span class="toc-number">3.2.</span> <span class="toc-text">2. build.gradle (项目级别)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-gradle-properties"><span class="toc-number">3.3.</span> <span class="toc-text">3. gradle.properties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-gradlew-Linux-Mac"><span class="toc-number">3.4.</span> <span class="toc-text">4. gradlew (Linux&#x2F;Mac)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-gradlew-bat-Windows"><span class="toc-number">3.5.</span> <span class="toc-text">5. gradlew.bat (Windows)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-local-properties"><span class="toc-number">3.6.</span> <span class="toc-text">6. local.properties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-settings-gradle"><span class="toc-number">3.7.</span> <span class="toc-text">7. settings.gradle</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="toc-number">4.</span> <span class="toc-text">参考文档</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.kinoko.fun/2025/01/14/know-gradle/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&text=速速了解Gradle构建工具"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&title=速速了解Gradle构建工具"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&is_video=false&description=速速了解Gradle构建工具"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=速速了解Gradle构建工具&body=Check out this article: https://blog.kinoko.fun/2025/01/14/know-gradle/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&title=速速了解Gradle构建工具"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&title=速速了解Gradle构建工具"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&title=速速了解Gradle构建工具"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&title=速速了解Gradle构建工具"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.kinoko.fun/2025/01/14/know-gradle/&name=速速了解Gradle构建工具&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.kinoko.fun/2025/01/14/know-gradle/&t=速速了解Gradle构建工具"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    <div class="footer-cnrecord">
+      <img id="gongan" alt class="gongan-logo"
+          src="/images/gongan.png" />
+      浙ICP备2023028448号-2
+    </div>
+    <div class="footer-copyright">
+      Copyright &copy;
+      
+      
+      2022-2025
+      阿菇kinoko
+    </div>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
