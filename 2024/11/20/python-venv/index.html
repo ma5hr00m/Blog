@@ -233,7 +233,7 @@
 <p>这个可执行文件做的其实就是调用虚拟环境中的python解释器（也就是调用本地的python解释器）将第三方库下载到虚拟环境的lib目录中</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">&lt;venv&gt;/lib/python&lt;version&gt;/site-packages/</span></span><br><span class="line">/home/ubuntu/Temporary/use-venv/venv/lib/python3.12/site-packages/</span><br></pre></td></tr></table></figure>
 
-<p>lib目录包含了虚拟环境中安装的python库，那lib64又是怎么回事儿？在某些系统上（如某些Linux发行版），lib64目录用于存放64位库。它的结构与lib目录相似，通常也包含python包。像我这里使用的是64位<a href="mailto:&#x75;&#x62;&#117;&#110;&#116;&#117;&#115;&#x65;&#x72;&#118;&#101;&#x72;&#x40;&#x32;&#x34;&#46;&#48;&#x34;">&#x75;&#x62;&#117;&#110;&#116;&#117;&#115;&#x65;&#x72;&#118;&#101;&#x72;&#x40;&#x32;&#x34;&#46;&#48;&#x34;</a>，lib64@就直接指向了lib目录。</p>
+<p>lib目录包含了虚拟环境中安装的python库，那lib64又是怎么回事儿？在某些系统上（如某些Linux发行版），lib64目录用于存放64位库。它的结构与lib目录相似，通常也包含python包。像我这里使用的是64位<a href="mailto:&#x75;&#98;&#117;&#110;&#x74;&#117;&#115;&#101;&#114;&#x76;&#x65;&#x72;&#x40;&#x32;&#52;&#x2e;&#x30;&#52;">&#x75;&#98;&#117;&#110;&#x74;&#117;&#115;&#101;&#114;&#x76;&#x65;&#x72;&#x40;&#x32;&#52;&#x2e;&#x30;&#52;</a>，lib64@就直接指向了lib目录。</p>
 <p>还有个include目录，里面是<a href="mailto:&#112;&#121;&#116;&#x68;&#x6f;&#110;&#x40;&#51;&#x2e;&#49;&#50;">&#112;&#121;&#116;&#x68;&#x6f;&#110;&#x40;&#51;&#x2e;&#49;&#50;</a>的头文件，允许你在虚拟环境中编译依赖于python 的c扩展。有时开发者需要使用c语言编写扩展模块，以提高性能或访问某些底层系统功能。这个不在此处赘述。</p>
 <hr>
 <p>ok，现在我们对整个虚拟环境（venv目录）的结构有了大致的了解。现在我们可以来看看激活脚本了，venv究竟是怎么支持我们使用虚拟环境的呢？以下是一个去除注释的activate，你也可以自己cat出来源码看看</p>
