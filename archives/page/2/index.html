@@ -61,41 +61,57 @@
     <div class="content index py4 ">
         
           <header id="header">
-  <a class="u-url u-uid" href="/">
+  <div id="logo-box">
     <img id="logo" alt class="u-logo" src="https://img.ma5hr00m.top/2025/avatar.jpg" />
+  </div>
+  <div id="title-box">
     <div id="title">
-      <h1 class="p-name">阿菇の博客</h1>
+      <a class="u-url u-uid" href="/">
+        <h1 class="p-name">阿菇の博客</h1>
+      </a>
     </div>
-  </a>
-  <div id="nav">
-    <ul>
-      <li class="icon">
-        <a href="#" aria-label="目录"><i class="fa-solid fa-bars fa-2x"></i></a>
-      </li>
-      <!--
-     --><li><a href="/">📄首页</a></li><!--
-   --><!--
-     --><li><a href="/archives/">📂归档</a></li><!--
-   --><!--
-     --><li><a href="/friends/">👫友链</a></li><!--
-   --><!--
-     --><li><a href="/categories/">🗂️分类</a></li><!--
-   --><!--
-     --><li><a href="/tags/">🏷️标签</a></li><!--
-   --><!--
-     --><li><a href="/about/">🌸关于</a></li><!--
-   --><!--
-     --><li><a href="/log/">📖日志</a></li><!--
-   --><!--
-     --><li><a href="/search/">🔍搜索</a></li><!--
-   -->
-    </ul>
+    <div id="nav">
+      <ul>
+        <li class="icon">
+          <a href="#" aria-label="目录"><i class="fa-solid fa-bars fa-2x"></i></a>
+        </li>
+        <!--
+       --><li><a href="/">📄首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">📂归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">👫友链</a></li><!--
+     --><!--
+       --><li><a href="/categories/">🗂️分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">🏷️标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">🌸关于</a></li><!--
+     --><!--
+       --><li><a href="/log/">📖日志</a></li><!--
+     --><!--
+       --><li><a href="/search/">🔍搜索</a></li><!--
+     -->
+      </ul>
+    </div>
   </div>
 </header>
 
         
         <div id="archive">
-  <ul class="post-list">
+  
+    <div class="pagination">
+        <a href="/archives/">
+            <i class="fa-solid fa-angle-left"></i>
+        </a>
+        <span class="page-number">第 2 页，共 5 页</span>
+        <a href="/archives/page/3/">
+            <i class="fa-solid fa-angle-right"></i>
+        </a>
+    </div>
+
+
+  <ul class="post-list post-list-archives">
     
     
     
@@ -119,7 +135,7 @@
 
         <span>
     
-        <a class="" href="/2024/06/17/promise/">Promise使用一览</a>
+        <a class="post-item-title" href="/2024/06/17/promise/">Promise使用一览</a>
     
 
 
@@ -143,7 +159,7 @@
 
         <span>
     
-        <a class="" href="/2024/06/10/glcm/">图像纹理特征提取|灰度共生矩阵</a>
+        <a class="post-item-title" href="/2024/06/10/glcm/">图像纹理特征提取|灰度共生矩阵</a>
     
 
 
@@ -167,7 +183,7 @@
 
         <span>
     
-        <a class="" href="/2024/06/05/browser-eventloop/">浏览器中的 Event Loop</a>
+        <a class="post-item-title" href="/2024/06/05/browser-eventloop/">浏览器中的 Event Loop</a>
     
 
 
@@ -191,7 +207,7 @@
 
         <span>
     
-        <a class="" href="/2024/06/03/async-await/">流畅地使用 async/await</a>
+        <a class="post-item-title" href="/2024/06/03/async-await/">流畅地使用 async/await</a>
     
 
 
@@ -215,7 +231,7 @@
 
         <span>
     
-        <a class="" href="/2024/06/01/frp-read/">FRPv0.1.0 源码阅读</a>
+        <a class="post-item-title" href="/2024/06/01/frp-read/">FRPv0.1.0 源码阅读</a>
     
 
 
@@ -239,7 +255,7 @@
 
         <span>
     
-        <a class="" href="/2024/05/21/hello-web/">HelloWeb 致新生</a>
+        <a class="post-item-title" href="/2024/05/21/hello-web/">HelloWeb 致新生</a>
     
 
 
@@ -263,7 +279,7 @@
 
         <span>
     
-        <a class="" href="/2024/04/21/aliyunctf-2024/">AliyunCTF2024 Writeup</a>
+        <a class="post-item-title" href="/2024/04/21/aliyunctf-2024/">AliyunCTF2024 Writeup</a>
     
 
 
@@ -287,7 +303,7 @@
 
         <span>
     
-        <a class="" href="/2024/02/19/overview-of-nginx-process-model/">Nginx进程模型概述</a>
+        <a class="post-item-title" href="/2024/02/19/overview-of-nginx-process-model/">Nginx进程模型概述</a>
     
 
 
@@ -311,7 +327,7 @@
 
         <span>
     
-        <a class="" href="/2024/02/16/js-scope-and-hoisting/">JavaScript作用域与提升</a>
+        <a class="post-item-title" href="/2024/02/16/js-scope-and-hoisting/">JavaScript作用域与提升</a>
     
 
 
@@ -335,7 +351,7 @@
 
         <span>
     
-        <a class="" href="/2024/02/14/js-prototype-chain/">JavaScript原型链详解</a>
+        <a class="post-item-title" href="/2024/02/14/js-prototype-chain/">JavaScript原型链详解</a>
     
 
 
@@ -343,19 +359,6 @@
       </li>
     
   </ul>
-  
-    <div class="pagination">
-        
-            <a href="/archives/"><i class="fa-solid fa-angle-left"></i></a>
-        
-        <span class="page-number">第 2 页，共 5 页</span>
-        
-            <a href="/archives/page/3/"><i class="fa-solid fa-angle-right"></i>
-            </a>
-        
-    </div>
-
-
 </div>
 
         
